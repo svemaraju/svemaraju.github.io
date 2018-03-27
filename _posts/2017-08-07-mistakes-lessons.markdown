@@ -3,7 +3,7 @@ layout: post
 title:  "Mistakes and Learnings."
 date:   2017-08-07 20:00:01 +0530
 display_date: "Aug 07, 2017"
-categories: general
+categories: Programming
 permalink: "/mistakes"
 ---
 

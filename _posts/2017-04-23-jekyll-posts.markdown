@@ -3,7 +3,7 @@ layout: post
 title:  "At the outset.."
 date:   2017-05-02 20:00:01 +0530
 display_date: "May 02, 2017"
-categories: general
+categories: Intro
 permalink: "/introduction"
 ---
 

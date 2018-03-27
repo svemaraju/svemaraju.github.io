@@ -3,7 +3,7 @@ layout: post
 title:  "Learning to work on existing codebases."
 date:   2018-02-07 20:00:01 +0530
 display_date: "Feb 07, 2018"
-categories: general
+categories: Programming
 permalink: "/legacy-code"
 ---
 
