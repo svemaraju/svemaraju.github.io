@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Managing Python Dependencies The Right Way."
+title:  "Managing Python Dependencies Robustly."
 date:   2018-10-01 12:00:01 +0530
 display_date: "Oct 01, 2018"
 categories: Software-Engg
