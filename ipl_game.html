@@ -15,8 +15,8 @@
     padding: 10px;
     font-size: 27px;
   }
-  p {
-    text-align: center;
+  .message {
+    font-size: 12px;
   }
   #thumbnail {
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
@@ -87,11 +87,15 @@
     color: inherit;
   }
 
+  #questionText {
+    margin: 10px;
+  }
+
   #guess-submit:hover {
     background: linear-gradient(45deg, magenta, orange);
   }
   @media only screen and (max-width: 768px) {
-  /* For mobile phones: */
+   For mobile phones: 
   .main {
     margin-left: 75px;
   }
@@ -101,9 +105,10 @@
 
 <body>
 <h1>🏏 FunWithCricket 🏏</h1>
-<h2> Who's got a better ____? (IPL Edition)</h2> <p>Your Score: <span id="score"></span></p>
-<h3 id="questionText"> . . . </h3>
+<h2> Who's got a better ____? (IPL Edition)</h2>
+<h3 id="scoreText"> Your Score: <span id="score">0</span> / <span id="totalQuestions"></span></h3>
 <div class="main" id="main">
+<p><span id="currentQuestion">1</span>.<span id="questionText"></span></p>
 <div id="game-container">
   <div class="fullCard" id="thumbnail" onclick="submitAnswer(1)">
     <div class="cardContent">
@@ -137,6 +142,10 @@
 </html>
 
 <script>
+function getRandomNumber() {
+  return Math.floor(Math.random() * Math.floor(10000));
+}
+
 function xhrSuccess() { 
     this.callback.apply(this, this.arguments); 
 }
@@ -145,8 +154,12 @@ function xhrError() {
     console.error(this.statusText); 
 }
 
-function loadData(callback) {
-    URL = 'https://gist.githubusercontent.com/svemaraju/59d74784fe36a977af584a88f4865a14/raw/63153dbbb659289ec387e611456952803ca73af1/wgbb_01.json'
+function loadData(callback, game_id) {
+    if (!game_id) {
+      game_id = getRandomNumber();
+    }
+    url_suffix = 'wgbb_'+game_id+'.json';
+    URL = 'https://raw.githubusercontent.com/svemaraju/svemaraju.github.io/master/data_bank/' + url_suffix;
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.callback = callback;
     xmlHttp.onload = xhrSuccess;
@@ -158,43 +171,55 @@ function loadData(callback) {
 function processData() {
   data = JSON.parse(this.responseText);
   currentIndex = 0;
+  dataLen = data.questions.length;
   loadNextQuestion();
 }
 
 function loadNextQuestion() {
   document.getElementById("playerOneName").innerHTML = data.questions[currentIndex].player_1.name;
   document.getElementById("playerTwoName").innerHTML = data.questions[currentIndex].player_2.name;
-  document.getElementById("questionText").innerHTML = "Who has a greater batting average?"
+  document.getElementById("questionText").innerHTML = data.questions[currentIndex].question_text;
+  document.getElementById("totalQuestions").innerHTML = dataLen;
+  document.getElementById("currentQuestion").innerHTML = currentIndex+1;
 }
 
 window.onload = function () {
     currentIndex = -1;
     score = 0;
-    loadData(processData);
+    var game_id = document.URL.split('#')[1];
+    loadData(processData, game_id);
 };
 
 function recordCorrectAnswer() {
   data.questions[currentIndex].player_1.correct = "";
   data.questions[currentIndex].player_2.correct = "";
   data.questions[currentIndex].correct = "";
-  if (data.questions[currentIndex].player_1.player_stat > data.questions[currentIndex].player_2.player_stat) {
+  if (compareStats(data.questions[currentIndex].player_1.player_stat, data.questions[currentIndex].player_2.player_stat, data.questions[currentIndex].greater)) {
     data.questions[currentIndex].player_1.correct = "✔️";
-  } else if (data.questions[currentIndex].player_1.player_stat < data.questions[currentIndex].player_2.player_stat) {
+  } else if (compareStats(data.questions[currentIndex].player_2.player_stat, data.questions[currentIndex].player_1.player_stat, data.questions[currentIndex].greater)) {
     data.questions[currentIndex].player_2.correct = "✔️";
   } else {
     data.questions[currentIndex].correct = "✔️";
   }
 }
 
+function compareStats(statA, statB, greater) {
+  if (greater == true) {
+    return statA > statB
+  } else {
+    return statB > statA
+  }
+}
+
 function submitAnswer(player) {
   if (player == 1){
     data.questions[currentIndex].player_1.selected = "answerChosen";
-    if (data.questions[currentIndex].player_1.player_stat > data.questions[currentIndex].player_2.player_stat) {
+    if (compareStats(data.questions[currentIndex].player_1.player_stat, data.questions[currentIndex].player_2.player_stat, data.questions[currentIndex].greater)) {
       score++;
     } 
   } else if (player == 2) {
     data.questions[currentIndex].player_2.selected = "answerChosen";
-    if (data.questions[currentIndex].player_1.player_stat < data.questions[currentIndex].player_2.player_stat) {
+    if (compareStats(data.questions[currentIndex].player_2.player_stat, data.questions[currentIndex].player_1.player_stat, data.questions[currentIndex].greater)) {
       score++;
     }
   } else if (player == 3) {
@@ -205,13 +230,13 @@ function submitAnswer(player) {
   }
   recordCorrectAnswer()
   currentIndex++;
-  if (currentIndex <= 9) {
+  if (currentIndex < dataLen) {
     document.getElementById("score").innerHTML = score;
     loadNextQuestion();
   } else {
-    console.log(data);
     document.getElementById("main").innerHTML = data.questions.map(item => 
-      `<div id="game-container">
+      `<p id="questionText">${item.question_text}</p>
+      <div id="game-container">
   <div class="fullCard ${item.player_1.selected}" id="thumbnail">
     <div class="cardContent">
       <div class="cardText">
@@ -252,6 +277,8 @@ function submitAnswer(player) {
     </div>
   </div>
 </div>
+<br>
+<br>
 `).join('')
   }
   
