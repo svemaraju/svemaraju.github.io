@@ -50,14 +50,6 @@
     width: 200px;
   }
 
-  @media screen and (min-width: 800px) {
-    // this css will only be used when the screen size is min 800px
-    .fullCard:hover {
-      background: linear-gradient(45deg, magenta, cyan);
-    }
-  }
-
-
   .answerChosen {
     background: linear-gradient(45deg, magenta, cyan);
   }
@@ -159,7 +151,7 @@
   <div class="fullCard" id="thumbnail" onclick="submitAnswer(3)">
     <div class="cardContent">
       <div class="cardText">
-        <p>Or are they equal? 🧐</p>
+        <p id="playerThreeName">Or are they equal? 🧐</p>
       </div>
     </div>
   </div>
@@ -208,6 +200,7 @@ function loadNextQuestion() {
   document.getElementById("questionText").innerHTML = data.questions[currentIndex].question_text;
   document.getElementById("totalQuestions").innerHTML = dataLen;
   document.getElementById("currentQuestion").innerHTML = currentIndex+1;
+  document.getElementById("playerThreeName").innerHTML = 'Or are they equal? 🧐';
 }
 
 window.onload = function () {
@@ -238,18 +231,18 @@ function compareStats(statA, statB, greater) {
   }
 }
 
-function submitAnswer(player) {
-  if (player == 1){
+function processingAnswers() {
+  if (playerChosen == 1){
     data.questions[currentIndex].player_1.selected = "answerChosen";
     if (compareStats(data.questions[currentIndex].player_1.player_stat, data.questions[currentIndex].player_2.player_stat, data.questions[currentIndex].greater)) {
       score++;
     } 
-  } else if (player == 2) {
+  } else if (playerChosen == 2) {
     data.questions[currentIndex].player_2.selected = "answerChosen";
     if (compareStats(data.questions[currentIndex].player_2.player_stat, data.questions[currentIndex].player_1.player_stat, data.questions[currentIndex].greater)) {
       score++;
     }
-  } else if (player == 3) {
+  } else if (playerChosen == 3) {
     data.questions[currentIndex].selected = "answerChosen";
     if (data.questions[currentIndex].player_1.player_stat == data.questions[currentIndex].player_2.player_stat) {
       score++;
@@ -309,7 +302,15 @@ function submitAnswer(player) {
 `).join('');
 document.getElementById("message").innerHTML = '<a href="https://svemaraju.github.io/ipl_game.html">Play Again!!</a>';
   }
-  
+}
+
+function submitAnswer(player) {
+  playerChosen = player;
+  document.getElementById("playerOneName").innerHTML = ' Checking . . . 🤩';
+  document.getElementById("playerTwoName").innerHTML = ' Checking . . . 🤔';
+  document.getElementById("playerThreeName").innerHTML = ' Checking . . . 🤪';
+  document.getElementById("questionText").innerHTML = ' Checking . . . 😬';
+  setTimeout(processingAnswers, 1500);
 
 }
 
