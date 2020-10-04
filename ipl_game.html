@@ -15,12 +15,15 @@
     padding: 10px;
     font-size: 27px;
   }
-  .message {
-    font-size: 12px;
+
+  a {
+    font-size: 24px;
+    color: #2ecc71;
   }
   #thumbnail {
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
   }
+
   .fullCard {
     border: 1px solid #ccc;
     border-radius: 15px;
@@ -29,22 +32,25 @@
     height: 60px;
     width: 200px;
   }
-  .fullCard:hover, .fullCard:active {
+
+  .fullCard:hover {
     background: linear-gradient(45deg, magenta, cyan);
   }
+
   .answerChosen {
     background: linear-gradient(45deg, magenta, cyan);
   }
   .cardContent {
     padding: 0px;
   }
+
   .cardText {
     margin: 10px;
   }
+
   h1 {
     color: #2ecc71;
   }
-
   #game-container {
     display: flex;
     flex-direction: row;
@@ -107,6 +113,7 @@
 <h1>🏏 FunWithCricket 🏏</h1>
 <h2> Who's got a better ____? (IPL Edition)</h2>
 <h3 id="scoreText"> Your Score: <span id="score">0</span> / <span id="totalQuestions"></span></h3>
+<p id="message"> Click/Tap on one of the three options. </p>
 <div class="main" id="main">
 <p><span id="currentQuestion">1</span>.<span id="questionText"></span></p>
 <div id="game-container">
@@ -137,7 +144,6 @@
   </div>
 </div>
 </div>
-
 </body>
 </html>
 
@@ -229,9 +235,9 @@ function submitAnswer(player) {
     }
   }
   recordCorrectAnswer()
+  document.getElementById("score").innerHTML = score;
   currentIndex++;
   if (currentIndex < dataLen) {
-    document.getElementById("score").innerHTML = score;
     loadNextQuestion();
   } else {
     document.getElementById("main").innerHTML = data.questions.map(item => 
@@ -279,7 +285,8 @@ function submitAnswer(player) {
 </div>
 <br>
 <br>
-`).join('')
+`).join('');
+document.getElementById("message").innerHTML = '<a href="https://svemaraju.github.io/ipl_game.html">Play Again!!</a>';
   }
   
 
