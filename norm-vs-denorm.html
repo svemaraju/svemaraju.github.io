@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>🔄 Tradeoff between Normalisation and Denormalisation when Scaling Your API 📈🔁</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <meta name="description" content="There's something I have managed to crystallise for myself. As a Backend Engineer, I deal with designing relational database models often...." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Srikanth Vemaraju</a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/databases.html">databases</a></li>
+                    <li><a href="/category/python.html">python</a></li>
+                    <li><a href="/category/software-engineering.html">software-engineering</a></li>
+                    <li><a href="/category/user-experience.html">user-experience</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/norm-vs-denorm.html" rel="bookmark"
+           title="Permalink to 🔄 Tradeoff between Normalisation and Denormalisation when Scaling Your API 📈🔁">🔄 Tradeoff between Normalisation and Denormalisation when Scaling Your API 📈🔁</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2023-05-30T20:00:00+01:00">
+                Published: Tue 30 May 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/databases.html">databases</a>.</p>
+
+</footer><!-- /.post-info -->      <p>There's something I have managed to crystallise for myself. As a Backend Engineer, I deal with designing relational database models often. Modelling the database is a crucial step in getting the API right in any modern application.</p>
+<p>There is a delicate trade-off between normalisation and denormalisation while modelling a relational database. It's a crucial consideration that can significantly impact the performance and efficiency of a system as it grows. 🌱💡</p>
+<p>This trade-off is something that my intuition took some time to catch. It is also something that has rarely been discussed in the early part of my career.</p>
+<p>Normalisation aims to eliminate data redundancy and ensure data integrity by breaking down data into separate tables and establishing relationships through keys. On the other hand, denormalisation involves combining related data into a single table to improve query performance and reduce complexity.</p>
+<p>When scaling your API, finding the right balance between these two approaches becomes critical. Let's take a look at how normalisation and denormalisation can impact query performance in the context of a messaging application:</p>
+<p>In a normalised database design for a messaging app, you might have separate tables for users, conversations, and messages. Each message would reference the conversation it belongs to and the user who sent it. This design ensures data integrity and reduces redundancy, making it easier to update and modify user or conversation details. However, when retrieving a conversation with all its messages, multiple table joins are required, potentially impacting query performance as the dataset grows.</p>
+<p>On the other hand, denormalisation in the same messaging application could involve duplicating relevant data. For example, you might store denormalised conversations with embedded messages in a single table. This design eliminates the need for complex joins, allowing for faster retrieval of conversations and their associated messages. However, it increases the redundancy of data, potentially leading to data inconsistencies if not managed carefully.</p>
+<p>The choice for the messaging application depends on various factors. If data consistency is critical and frequent updates are expected, a normalised approach ensures data integrity. However, if query performance and retrieval speed are paramount, denormalisation can provide a performance boost by reducing the need for joins and simplifying queries.</p>
+<p>Each approach comes with trade-offs, and finding the right balance for your messaging application depends on the specific needs and priorities of your system.</p>
+<p>What are your thoughts on normalisation and denormalisation in the context of API scaling? Share your experiences and insights in the comments below. Let's learn from each other and navigate the trade-offs together! 🚀💬</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

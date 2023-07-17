@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Srikanth Vemaraju - python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Srikanth Vemaraju</a></h1>
+                <nav><ul>
+                    <li><a href="/category/databases.html">databases</a></li>
+                    <li><a href="/category/python.html">python</a></li>
+                    <li><a href="/category/software-engineering.html">software-engineering</a></li>
+                    <li><a href="/category/user-experience.html">user-experience</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/learn-by-building-a-data-pipeline-part-0.html">"Learn By Building A Data Pipeline –  Part 0"</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2020-03-28T12:00:01+05:30">
+                Published: Sat 28 March 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
+</footer><!-- /.post-info --><p>I just wanted to build something where I will be forced to explore and learn new things. I didn’t really know where to start so I started going back to one thing I have always thought had the potential to build interesting things. Reddit’s PRAW library, which is the python wrapper for reddit api.</p>
+<h2>Motivation and Initial Idea.</h2>
+<p>Reddit.com is controversial for many reasons, but it does have a lot of content that gets posted everyday and I really appreciate that they have opened up a pretty significant part of their data through PRAW. Some people have used this to build mobile clients for the website and others to build interesting bots on the website. I don’t have an intention to build anything production ready, but I am going to use it as a data source and build a real time data pipeline for performing analytics.</p>
+<p>To start off I had the following rough sketch on my mind.</p>
+<p><img alt="Alt Text" src="https://dev-to-uploads.s3.amazonaws.com/i/ccruwcwqvqu5fbza6t7i.png"></p>
+<p>The Producer produces a stream of data, continuously posting it to the Consumer which is continuously listening for data to come in. The Consumer will then try to perform some necessary processing and eventually store the data to the Datastore. This is pretty basic data pipeline that I have seen referenced in various books and blog posts.</p>
+<p>The PRAW library has a nifty feature to generate a stream of submissions or posts.</p>
+<p>Once we instantiate a <code>reddit</code> instance with necessary authentication information, we can access the stream as below.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">all_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">reddit</span>.<span class="nv">subreddit</span><span class="ss">(</span><span class="s1">&#39;all&#39;</span><span class="ss">)</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">post</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">all_</span>.<span class="nv">stream</span>.<span class="nv">submissions</span><span class="ss">()</span>:
+<span class="w">    </span><span class="nv">process</span><span class="ss">(</span><span class="nv">post</span><span class="ss">)</span>
+</code></pre></div>
+
+<p>The <code>process</code> function here is a placeholder for any processing or extracting we’d like to do on the data. Each <code>post</code> contains information like creation time, url, title text, user who posted it and the subreddit it belongs to. In the spirit of approaching the task in small iterations I have decided to limit the data being extracted to the subreddit name. This will allow me to implement a counter that will track the number of posts being posted on reddit under each subreddit name. As one of the outputs to our task, we can hope to view some kind of tabular data showing subreddit names with respective number of posts. Of course, the number of posts here is merely the number of posts from the time we start listening on the stream and doesn't relate to overall number of posts in a lifetime. It was really helpful in visualising this before implementing any code, so as to have a clear goal in mind.</p>
+<h2>First Steps in Implementation.</h2>
+<p>The very next question that came to my mind was how should I architect this system. I can very simply write a function that has the above code displayed, and another function that can consume the data eventually populating a dictionary of subreddit_name:count. But that would be just too trivial. As I was in the mood for exploring. Instead of treating each box as a function I decided to treat them as a service. Something I could place inside a docker container. And similarly instead of maintaining a dictionary I decided to make use of redis key value store, which also can be put inside a docker container.</p>
+<p>As I have never done anything complex on docker before, I had to spent sometime familiarizing myself with its features. Thankfully as I had a clear goal in mind and a diagram on paper I was able to quickly narrow down the specific docker commands and syntax that was needed.</p>
+<p>I decided to use Flask to build the Consumer API. A POST endpoint that’ll will accept a message payload containing the subreddit name.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">escape</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">import</span> <span class="nn">redis</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="n">cache</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;redis&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">store_count</span><span class="p">(</span><span class="n">subreddit</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Store number of posts for each subreddit.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">cache</span><span class="o">.</span><span class="n">incr</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;subreddit-</span><span class="si">{</span><span class="n">subreddit</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/posts&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">consume_posts</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span>
+    <span class="n">subreddit</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;subreddit&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Received a post from </span><span class="si">{</span><span class="n">subreddit</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">store_count</span><span class="p">(</span><span class="n">subreddit</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+</code></pre></div>
+
+<p>I configured the Consumer flask app with the help of this <a href="https://dev.to/riverfount/dockerize-a-flask-app-17ag">dev.to post</a>.</p>
+<p>For the Producer I wrote a simple python script that called the POST API on Consumer.</p>
+<div class="highlight"><pre><span></span><code><span class="nx">def</span><span class="w"> </span><span class="nx">publish</span><span class="p">(</span><span class="nx">data</span><span class="p">):</span>
+<span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    Post data to a consumer api.</span>
+<span class="s">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="nx">response</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">requests</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span>
+<span class="w">        </span><span class="nx">publish_url</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">data</span><span class="p">=</span><span class="nx">json</span><span class="p">.</span><span class="nx">dumps</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
+<span class="w">        </span><span class="nx">headers</span><span class="p">={</span><span class="err">&#39;</span><span class="nx">content</span><span class="o">-</span><span class="k">type</span><span class="sc">&#39;:&#39;</span><span class="nx">application</span><span class="o">/</span><span class="nx">json</span><span class="err">&#39;</span><span class="p">}</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">response</span>
+
+
+<span class="nx">def</span><span class="w"> </span><span class="nx">read</span><span class="p">():</span>
+<span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    Read reddit&#39;s stream of submissions on r/all.</span>
+<span class="s">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="nx">count</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">post</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">all_</span><span class="p">.</span><span class="nx">stream</span><span class="p">.</span><span class="nx">submissions</span><span class="p">():</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nx">Let</span><span class="err">&#39;</span><span class="nx">s</span><span class="w"> </span><span class="nx">start</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">publishing</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nx">just</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">subreddit</span><span class="w"> </span><span class="nx">name</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">count</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="mi">100</span><span class="p">:</span><span class="w"> </span><span class="k">break</span>
+<span class="w">        </span><span class="nx">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;</span><span class="nx">subreddit</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="nx">post</span><span class="p">.</span><span class="nx">subreddit</span><span class="p">.</span><span class="nx">display_name</span><span class="p">}</span>
+<span class="w">        </span><span class="nx">publish</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">print</span><span class="p">(</span><span class="nx">f</span><span class="err">&#39;</span><span class="nx">Published</span><span class="w"> </span><span class="p">{</span><span class="nx">count</span><span class="o">+</span><span class="mi">1</span><span class="p">}</span><span class="w"> </span><span class="nx">posts</span><span class="p">.</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">count</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="nx">time</span><span class="p">.</span><span class="nx">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="nx">add</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">bit</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">delay</span>
+</code></pre></div>
+
+<p>I dockerized the script with the help of the below <a href="https://dev.to/thejessleigh/dockerizing-a-simple-python-process-2gdk">dev.to post</a>.</p>
+<p>Eventually I figured that I need to use <a href="https://docs.docker.com/compose/gettingstarted/">docker-compose</a> in order to operate multiple containers, so after a brief exploration I ended up with the following configuration for <code>docker-compose.yml</code></p>
+<div class="highlight"><pre><span></span><code>version: &#39;3&#39;
+services:
+  consumer:
+    build: consumer-api/
+    ports:
+      - &quot;5000:5000&quot;
+  redis:
+    image: &quot;redis:alpine&quot;
+  producer:
+    build: producer/
+</code></pre></div>
+
+<p>I realized I needed my Producer to wait until my Consumer is ready. So I added a bit of delay ahead of starting the stream.</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="nv">__name__</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;__main__&#39;</span>:
+<span class="w">    </span><span class="nv">time</span>.<span class="nv">sleep</span><span class="ss">(</span><span class="mi">20</span><span class="ss">)</span>
+<span class="w">    </span><span class="nv">print</span><span class="ss">(</span><span class="s2">&quot;---- Starting the reddit post stream ----&quot;</span><span class="ss">)</span>
+<span class="w">    </span><span class="nv">read</span><span class="ss">()</span>
+</code></pre></div>
+
+<h2>Seeing The Initial Result.</h2>
+<p>After some trials I eventually managed to process the 101 posts from reddit. Opening up the redis-cli via <code>docker-exec</code> command I saw the keys created.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">docker</span><span class="w"> </span><span class="k">exec</span><span class="w"> </span><span class="o">-</span><span class="nv">it</span><span class="w"> </span><span class="nv">e0407395d363</span><span class="w"> </span><span class="s1">&#39;redis-cli&#39;</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mf">6379</span><span class="o">&gt;</span><span class="w"> </span><span class="n">keys</span><span class="w"> </span><span class="n">subreddit</span><span class="o">-*</span>
+<span class="w">  </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-Advice&quot;</span>
+<span class="w">  </span><span class="mf">2</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-worldnews&quot;</span>
+<span class="w">  </span><span class="mf">3</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-houstonr4r&quot;</span>
+<span class="w">  </span><span class="mf">4</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-buildapc&quot;</span>
+<span class="w">  </span><span class="mf">5</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-FootFetish&quot;</span>
+<span class="w">  </span><span class="mf">6</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-MrLove&quot;</span>
+<span class="w">  </span><span class="mf">7</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-bootyshorts&quot;</span>
+<span class="w">  </span><span class="mf">8</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-u_AujasCybersecurity&quot;</span>
+<span class="w">  </span><span class="mf">9</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-u_KeyGur2&quot;</span>
+<span class="w"> </span><span class="mf">10</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-Fire_Emblem_R34&quot;</span>
+<span class="w"> </span><span class="mf">11</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-RaidShadowLegends&quot;</span>
+<span class="w"> </span><span class="mf">12</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-youngpeopleyoutube&quot;</span>
+<span class="w"> </span><span class="mf">13</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;subreddit-germany&quot;</span>
+
+<span class="mf">127.0.0.1</span><span class="p">:</span><span class="mf">6379</span><span class="o">&gt;</span><span class="w"> </span><span class="kr">get</span><span class="w"> </span><span class="n">subreddit</span><span class="o">-</span><span class="n">Coronavirus</span>
+<span class="s">&quot;3&quot;</span>
+<span class="mf">127.0.0.1</span><span class="p">:</span><span class="mf">6379</span><span class="o">&gt;</span><span class="w"> </span><span class="kr">get</span><span class="w"> </span><span class="n">subreddit</span><span class="o">-</span><span class="n">CoronavirusUK</span>
+<span class="s">&quot;1&quot;</span>
+</code></pre></div>
+
+<h2>Observations and Next Steps</h2>
+<p>I initially reckoned that my approach in using a Flask API might not be scalable and I might see the delays in processing of the http requests. But I realised that way I was looping over each <code>post</code> from the reddit stream and synchronously calling the <code>publish</code> meant that I really am not achieving true “real time” capabilities here. So for the next steps I will explore minimizing the overhead in publishing the stream data onto the Consumer and at the same time try to refactor the Consumer to be reactive and event driven.</p>
+<p>I will also need to write a “Viewer” service that will read the data present in redis and display them in a readable way.</p>
+<p>Having a clear goal in mind helped me in making a quick progress without getting bogged on details. Reddit's PRAW library handy <code>stream</code> feature minimized the time to start putting code on editor.</p>
+<h2>Conclusion.</h2>
+<p>I completed the very basic first step in my learning and understanding of real time data streaming systems. Although what I have built cannot be categorized as too trivial, it is far from being close complete and has a big scope for improvement. In the coming days and weeks I would like to explore various ways to enhance this data pipeline. </p>
+<p>Thanks for reading. Please feel free to give me any feedback.</p>
+<p>Cheers.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/managing-python-dependencies-robustly.html" rel="bookmark"
+                           title="Permalink to "Managing Python Dependencies Robustly."">"Managing Python Dependencies Robustly."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-10-01T12:00:01+05:30">
+                Published: Mon 01 October 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
+</footer><!-- /.post-info -->                <p>I wanted to write a blog post about something I learned this week. We use a standard set of open source packages in our projects. Almost all of them are pretty stable and cause no problems, but on some rare occasions, rarer than in the case of code I write …</p>
+                <a class="readmore" href="/managing-python-dependencies-robustly.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/observations-on-api-design.html" rel="bookmark"
+                           title="Permalink to "Observations on API Design."">"Observations on API Design."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-22T20:00:01+05:30">
+                Published: Thu 22 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+<p>tags: <a href="/tag/api-design.html">api-design</a> <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
+</footer><!-- /.post-info -->                <p>There are a lot of resources regarding designing good APIs. I personally found <a href="https://www.youtube.com/watch?v=aAb7hSCtvGw">the talk from Joshua Bloch</a> to be highly informative.  I can also add Martin Fowler's articles and talks, along the with highly recommended book "Design Patterns" by Erich Gamma et al., as good sources to refer when …</p>
+                <a class="readmore" href="/observations-on-api-design.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

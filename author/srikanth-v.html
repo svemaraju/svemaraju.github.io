@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Srikanth V ~ a developer's blog - Srikanth V</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Srikanth V ~ a developer's blog</a></h1>
+                <nav><ul>
+                    <li><a href="/category/databases.html">databases</a></li>
+                    <li><a href="/category/python.html">python</a></li>
+                    <li><a href="/category/software-engineering.html">software-engineering</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/tradeoff-between-normalisation-and-denormalisation-when-scaling-your-api.html">🔄 Tradeoff between Normalisation and Denormalisation when Scaling Your API 📈🔁</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2023-05-30T20:00:00+01:00">
+                Published: Tue 30 May 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/databases.html">databases</a>.</p>
+
+</footer><!-- /.post-info --><p>There's something I have managed to crystallise for myself. As a Backend Engineer, I deal with designing relational database models often. Modelling the database is a crucial step in getting the API right in any modern application.</p>
+<p>There is a delicate trade-off between normalisation and denormalisation while modelling a relational database. It's a crucial consideration that can significantly impact the performance and efficiency of a system as it grows. 🌱💡</p>
+<p>This trade-off is something that my intuition took some time to catch. It is also something that has rarely been discussed in the early part of my career.</p>
+<p>Normalisation aims to eliminate data redundancy and ensure data integrity by breaking down data into separate tables and establishing relationships through keys. On the other hand, denormalisation involves combining related data into a single table to improve query performance and reduce complexity.</p>
+<p>When scaling your API, finding the right balance between these two approaches becomes critical. Let's take a look at how normalisation and denormalisation can impact query performance in the context of a messaging application:</p>
+<p>In a normalised database design for a messaging app, you might have separate tables for users, conversations, and messages. Each message would reference the conversation it belongs to and the user who sent it. This design ensures data integrity and reduces redundancy, making it easier to update and modify user or conversation details. However, when retrieving a conversation with all its messages, multiple table joins are required, potentially impacting query performance as the dataset grows.</p>
+<p>On the other hand, denormalisation in the same messaging application could involve duplicating relevant data. For example, you might store denormalised conversations with embedded messages in a single table. This design eliminates the need for complex joins, allowing for faster retrieval of conversations and their associated messages. However, it increases the redundancy of data, potentially leading to data inconsistencies if not managed carefully.</p>
+<p>The choice for the messaging application depends on various factors. If data consistency is critical and frequent updates are expected, a normalised approach ensures data integrity. However, if query performance and retrieval speed are paramount, denormalisation can provide a performance boost by reducing the need for joins and simplifying queries.</p>
+<p>Each approach comes with trade-offs, and finding the right balance for your messaging application depends on the specific needs and priorities of your system.</p>
+<p>What are your thoughts on normalisation and denormalisation in the context of API scaling? Share your experiences and insights in the comments below. Let's learn from each other and navigate the trade-offs together! 🚀💬</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/5-simple-recursion-programs-in-python.html" rel="bookmark"
+                           title="Permalink to "5 Simple Recursion Programs in Python."">"5 Simple Recursion Programs in Python."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-09-05T20:00:01+05:30">
+                Published: Sat 05 September 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/python.html">python</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> <a href="/tag/orm.html">orm</a> </p>
+</footer><!-- /.post-info -->                <p>Here are 5 simple Python recursive functions that will get you started with the practicing recursion.</p>
+<p>These are exercise problems taken from the book - <em>Data Structures and Algorithms in Python Michael H. Goldwasser, Michael T. Goodrich, and Roberto Tamassia</em></p>
+<h3>Write a short recursive Python function that finds the minimum and …</h3>
+                <a class="readmore" href="/5-simple-recursion-programs-in-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/learn-by-building-a-data-pipeline-part-0.html" rel="bookmark"
+                           title="Permalink to "Learn By Building A Data Pipeline – Part 0"">"Learn By Building A Data Pipeline –  Part 0"</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-03-28T12:00:01+05:30">
+                Published: Sat 28 March 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
+</footer><!-- /.post-info -->                <p>I just wanted to build something where I will be forced to explore and learn new things. I didn’t really know where to start so I started going back to one thing I have always thought had the potential to build interesting things. Reddit’s PRAW library, which is …</p>
+                <a class="readmore" href="/learn-by-building-a-data-pipeline-part-0.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/managing-python-dependencies-robustly.html" rel="bookmark"
+                           title="Permalink to "Managing Python Dependencies Robustly."">"Managing Python Dependencies Robustly."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-10-01T12:00:01+05:30">
+                Published: Mon 01 October 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
+</footer><!-- /.post-info -->                <p>I wanted to write a blog post about something I learned this week. We use a standard set of open source packages in our projects. Almost all of them are pretty stable and cause no problems, but on some rare occasions, rarer than in the case of code I write …</p>
+                <a class="readmore" href="/managing-python-dependencies-robustly.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/richard-hamming-you-and-your-research.html" rel="bookmark"
+                           title="Permalink to "Richard Hamming, You and Your Research"">"Richard Hamming, You and Your Research"</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-04-02T22:00:01+05:30">
+                Published: Mon 02 April 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+
+</footer><!-- /.post-info -->                <p>This is one of those things when I first saw, I asked myself why couldn't I have watched this earlier. I really can't tell if it would have made any difference had I watched this lecture 10 years ago, but I cannot stop myself from wondering about it. </p>
+<p>Richard Hamming …</p>
+                <a class="readmore" href="/richard-hamming-you-and-your-research.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/observations-on-api-design.html" rel="bookmark"
+                           title="Permalink to "Observations on API Design."">"Observations on API Design."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-22T20:00:01+05:30">
+                Published: Thu 22 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+<p>tags: <a href="/tag/api-design.html">api-design</a> <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
+</footer><!-- /.post-info -->                <p>There are a lot of resources regarding designing good APIs. I personally found <a href="https://www.youtube.com/watch?v=aAb7hSCtvGw">the talk from Joshua Bloch</a> to be highly informative.  I can also add Martin Fowler's articles and talks, along the with highly recommended book "Design Patterns" by Erich Gamma et al., as good sources to refer when …</p>
+                <a class="readmore" href="/observations-on-api-design.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/learning-to-work-on-existing-codebases.html" rel="bookmark"
+                           title="Permalink to "Learning to work on existing codebases."">"Learning to work on existing codebases."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-07T20:00:01+05:30">
+                Published: Wed 07 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+
+</footer><!-- /.post-info -->                <p><img alt="Staring at complex systems." src="http://orig07.deviantart.net/363d/f/2014/280/7/7/engine_maintenance_by_macrebisz-d81pr2o.jpg"></p>
+<p>Working with legacy code is probably the most common part of a developer’s job in the software industry. Unless you’re only going to work in super early phase startups or constantly get assigned to <a href="https://en.wikipedia.org/wiki/Greenfield_project">greenfield</a> projects, you <em>will</em> encounter legacy code. There are many articles written on the …</p>
+                <a class="readmore" href="/learning-to-work-on-existing-codebases.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/mistakes-and-learnings.html" rel="bookmark"
+                           title="Permalink to "Mistakes and Learnings."">"Mistakes and Learnings."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-08-07T20:00:01+05:30">
+                Published: Mon 07 August 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+
+</footer><!-- /.post-info -->                <p>It’s been over a year since I have started working at my current company. There have been lots of ups and downs. I know that’s a cliched thing to say, but it’s true. In this post, I have decided to really introspect over some of the mistakes …</p>
+                <a class="readmore" href="/mistakes-and-learnings.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/at-the-outset.html" rel="bookmark"
+                           title="Permalink to "At the outset.."">"At the outset.."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-05-02T20:00:01+05:30">
+                Published: Tue 02 May 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+
+</footer><!-- /.post-info -->                <p>Like many, I too have been contemplating to start blogging. And here I am, after many false starts, finally starting to put words onto the internet. </p>
+<p>My intentions here are very simple. I just want to log my learnings and observations, as I begin to transition from being a novice …</p>
+                <a class="readmore" href="/at-the-outset.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

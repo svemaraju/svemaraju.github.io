@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Srikanth V ~ a developer's blog - misc</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Srikanth V ~ a developer's blog</a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/misc.html">misc</a></li>
+                    <li><a href="/category/python-programming.html">python, programming</a></li>
+                    <li><a href="/category/software-engineering.html">software-engineering</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/managing-python-dependencies-robustly.html">"Managing Python Dependencies Robustly."</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-10-01T12:00:01+05:30">
+                Published: Mon 01 October 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/misc.html">misc</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
+</footer><!-- /.post-info --><p>I wanted to write a blog post about something I learned this week. We use a standard set of open source packages in our projects. Almost all of them are pretty stable and cause no problems, but on some rare occasions, rarer than in the case of code I write, there’s a bug or two that gets pushed into PyPi. Or it may not even be a bug, like a newer version that stops supporting Python 2. </p>
+<p>So in this particular instance, our project was using the django-scarface package, that helps us sending those SNS messages pretty easily. The mistake we did, was not pinning down the version in the requirements.txt file. </p>
+<div class="highlight"><pre><span></span><code>. . 
+django-scarface
+. .
+</code></pre></div>
+
+<p>The reason why I want to talk about this is to demonstrate how such a mistake can sneak up on you in production. The way the python packaging manager PIP works is that whenever you do not specify a version along with the package name, it always installs the latest version of the package. This part is probably expected by everyone. But if the package is already installed and you don’t specify a version, it will do nothing even if there is a newer version available.</p>
+<p>So here goes a scenario that will make this bug unnoticed until very late:
+- Create a new project in local -&gt; PIP install -&gt; All installed &amp; deployed perfectly -&gt; Awesome.
+- After some time you deploy to a Dev/QA/Staging server -&gt; PIP install -&gt; All setup perfectly here too -&gt; Great.
+- You have shippable product in your hand. Let’s go LIVE! -&gt; PIP install -&gt; Code is deployed -&gt; It’s LIVE folks!
+- Now if your production setup runs on a single server that is getting vertically scaled up whenever needed, you may not notice the bug unless you’ll have to migrate to another server for some reason. But in a lot of cases, high traffic is handled through horizontally scaling the systems by having a trigger configured to spawn or take down systems accordingly. That means a new system will always need a fresh install of the whole project, including the dependencies. Now when django-scarface dropped support for Python 2.7 in their 3.2 release, the very next autoscaling trigger on your production setup will result in a pretty ugly error like the following.</p>
+<div class="highlight"><pre><span></span><code>IOError: [Errno 2] No such file or directory: &#39;/tmp/pip-install-ji4l4h/django-scarface/django_scarface/__init__.py’
+</code></pre></div>
+
+<p>So all we need to do is specify the stable versions of all the packages we use as dependencies and this problem will never occur. And you will never have to bother about ever again. Right? Not really. </p>
+<p>These awesome OSS packages that we use to make our lives simple, can also make the same sort of mistakes that we do. They too can overlook the need to pin down their dependencies, and in that case you will run into the same problem as above or something even worse. An example of this is when Kombu, a messaging library used by Celery, released their 4.2 version that broke Celery. Celery which was careful in not leaving out a version range for Kombu in their <code>requirements.txt</code>, still had to face the issue as their <code>requirements.txt</code> read something like <code>kombu&gt;=4.0.2,&lt;5.0</code>. </p>
+<p>How do we detect breakages like these? A CI/CD pipeline that builds and runs tests can help us in detecting PIP installation errors in some cases. The catch here is that we CI/CD pipelines get triggered only when new code is pushed. Also in the case of Celery the installation did not raise any errors, it was only when Celery service was trying to boot up it threw an error. Having an error logging service like Sentry can help in these cases. Monitoring services that run detailed health checks like executing a critical part of the system and ensuring everything works as expected, is another way to deal with this. These practices are well recommended to handle production outages/errors in general, and they'll also work for our case.</p>
+<p>That's it! That's all I have to say. The younger more naive python programmer would have trouble paying attention to such detail. But I’m a lot wiser now. I have witnessed some really ugly stack traces in Sentry. Stack traces can be helpful in debugging, but they also can be revealing of how horrible results can some of the seeming harmless bugs can lead to. And they will force you to correct your shit. 😂</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/richard-hamming-you-and-your-research.html" rel="bookmark"
+                           title="Permalink to "Richard Hamming, You and Your Research"">"Richard Hamming, You and Your Research"</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-04-02T22:00:01+05:30">
+                Published: Mon 02 April 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/misc.html">misc</a>.</p>
+
+</footer><!-- /.post-info -->                <p>This is one of those things when I first saw, I asked myself why couldn't I have watched this earlier. I really can't tell if it would have made any difference had I watched this lecture 10 years ago, but I cannot stop myself from wondering about it. </p>
+<p>Richard Hamming …</p>
+                <a class="readmore" href="/richard-hamming-you-and-your-research.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/observations-on-api-design.html" rel="bookmark"
+                           title="Permalink to "Observations on API Design."">"Observations on API Design."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-22T20:00:01+05:30">
+                Published: Thu 22 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/misc.html">misc</a>.</p>
+<p>tags: <a href="/tag/api-design.html">api-design</a> <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
+</footer><!-- /.post-info -->                <p>There are a lot of resources regarding designing good APIs. I personally found <a href="https://www.youtube.com/watch?v=aAb7hSCtvGw">the talk from Joshua Bloch</a> to be highly informative.  I can also add Martin Fowler's articles and talks, along the with highly recommended book "Design Patterns" by Erich Gamma et al., as good sources to refer when …</p>
+                <a class="readmore" href="/observations-on-api-design.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/learning-to-work-on-existing-codebases.html" rel="bookmark"
+                           title="Permalink to "Learning to work on existing codebases."">"Learning to work on existing codebases."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-07T20:00:01+05:30">
+                Published: Wed 07 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/misc.html">misc</a>.</p>
+
+</footer><!-- /.post-info -->                <p><img alt="Staring at complex systems." src="http://orig07.deviantart.net/363d/f/2014/280/7/7/engine_maintenance_by_macrebisz-d81pr2o.jpg"></p>
+<p>Working with legacy code is probably the most common part of a developer’s job in the software industry. Unless you’re only going to work in super early phase startups or constantly get assigned to <a href="https://en.wikipedia.org/wiki/Greenfield_project">greenfield</a> projects, you <em>will</em> encounter legacy code. There are many articles written on the …</p>
+                <a class="readmore" href="/learning-to-work-on-existing-codebases.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/mistakes-and-learnings.html" rel="bookmark"
+                           title="Permalink to "Mistakes and Learnings."">"Mistakes and Learnings."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-08-07T20:00:01+05:30">
+                Published: Mon 07 August 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/misc.html">misc</a>.</p>
+
+</footer><!-- /.post-info -->                <p>It’s been over a year since I have started working at my current company. There have been lots of ups and downs. I know that’s a cliched thing to say, but it’s true. In this post, I have decided to really introspect over some of the mistakes …</p>
+                <a class="readmore" href="/mistakes-and-learnings.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/at-the-outset.html" rel="bookmark"
+                           title="Permalink to "At the outset.."">"At the outset.."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-05-02T20:00:01+05:30">
+                Published: Tue 02 May 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth-v.html">Srikanth V</a>
+        </address>
+<p>In <a href="/category/misc.html">misc</a>.</p>
+
+</footer><!-- /.post-info -->                <p>Like many, I too have been contemplating to start blogging. And here I am, after many false starts, finally starting to put words onto the internet. </p>
+<p>My intentions here are very simple. I just want to log my learnings and observations, as I begin to transition from being a novice …</p>
+                <a class="readmore" href="/at-the-outset.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

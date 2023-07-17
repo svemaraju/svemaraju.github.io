@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Srikanth Vemaraju - databases</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Srikanth Vemaraju</a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/databases.html">databases</a></li>
+                    <li><a href="/category/python.html">python</a></li>
+                    <li><a href="/category/software-engineering.html">software-engineering</a></li>
+                    <li><a href="/category/user-experience.html">user-experience</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/orm-vs-raw-sql.html">Using an ORM over writing raw SQL queries ...</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2023-07-04T20:00:00+01:00">
+                Published: Tue 04 July 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/databases.html">databases</a>.</p>
+<p>tags: <a href="/tag/backend-engineering.html">backend engineering</a> <a href="/tag/database.html">database</a> <a href="/tag/orm.html">orm</a> </p>
+</footer><!-- /.post-info --><p>I hear strong opinions among developers for both ways of working with relational database.</p>
+<p>Common reasons in favour of raw SQL:
+- We can optimise queries for performance. ORMs can be limited in ways they can be customised, and writing raw SQL allows more control over the craft.
+- We have less overhead. ORM, which stands for object-relational mapping, creates an object (like a Python object) for each of the database records. This additional processing time in object creation can become significant, particularly for queries with large result sets.</p>
+<p>These are the main technical reasons. However, I think there is a reluctance among developers who have already mastered the craft of SQL to adopt ORMs. As someone who started their programming career writing PL/SQL, I was skeptical when I first encountered an ORM. I wasn't willing to surrender the joy of meticulously crafting the perfect SQL and let ORM do all the work.</p>
+<p>Nevertheless, my perspective on ORMs has evolved. I have realised they are useful abstractions. They help in effective software development. ORMs give us minimal context switching between our chosen programming language and SQL.</p>
+<p>I observed that, even with less control over fine-tuning, I could write code more succinctly. I also reused my code conveniently, which meant that I developed software faster. On Django web framework's ORM, I use it's Manager and QuerySet classes to chain SQL clauses, reuse methods across the codebase, work well with other aspects like pagination or authorization. Additionally, auto-generated database migration files are wonderful.</p>
+<p>That being said, it does not mean that I can disregard SQL. Like any other tool, an ORM's effectiveness depends on how I use it. It's easy to unwittingly write ORM queries that result in unseen queries or fetch large amounts of data. For more complex use cases, having full control over the executed queries is crucial.</p>
+<p>ORM serves as an abstraction. We use abstractions all the time in software. SQL is also an abstraction over the internals of a database. Sometimes we build our own abstractions and sometimes it makes more sense to use existing ones.</p>
+<p>As Joel Spolsky stated in his "law of leaky abstractions" all non-trivial abstractions are leaky. When such leaks occur in my ORM, I will be prepared to put on my SQL plumbing hat.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/norm-vs-denorm.html" rel="bookmark"
+                           title="Permalink to 🔄 Tradeoff between Normalisation and Denormalisation when Scaling Your API 📈🔁">🔄 Tradeoff between Normalisation and Denormalisation when Scaling Your API 📈🔁</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2023-05-30T20:00:00+01:00">
+                Published: Tue 30 May 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/databases.html">databases</a>.</p>
+
+</footer><!-- /.post-info -->                <p>There's something I have managed to crystallise for myself. As a Backend Engineer, I deal with designing relational database models often. Modelling the database is a crucial step in getting the API right in any modern application.</p>
+<p>There is a delicate trade-off between normalisation and denormalisation while modelling a relational …</p>
+                <a class="readmore" href="/norm-vs-denorm.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Srikanth Vemaraju</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Srikanth Vemaraju</a></h1>
+                <nav><ul>
+                    <li><a href="/category/databases.html">databases</a></li>
+                    <li><a href="/category/python.html">python</a></li>
+                    <li><a href="/category/software-engineering.html">software-engineering</a></li>
+                    <li><a href="/category/user-experience.html">user-experience</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/orm-vs-raw-sql.html">Using an ORM over writing raw SQL queries ...</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2023-07-04T20:00:00+01:00">
+                Published: Tue 04 July 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/databases.html">databases</a>.</p>
+<p>tags: <a href="/tag/backend-engineering.html">backend engineering</a> <a href="/tag/database.html">database</a> <a href="/tag/orm.html">orm</a> </p>
+</footer><!-- /.post-info --><p>I hear strong opinions among developers for both ways of working with relational database.</p>
+<p>Common reasons in favour of raw SQL:
+- We can optimise queries for performance. ORMs can be limited in ways they can be customised, and writing raw SQL allows more control over the craft.
+- We have less overhead. ORM, which stands for object-relational mapping, creates an object (like a Python object) for each of the database records. This additional processing time in object creation can become significant, particularly for queries with large result sets.</p>
+<p>These are the main technical reasons. However, I think there is a reluctance among developers who have already mastered the craft of SQL to adopt ORMs. As someone who started their programming career writing PL/SQL, I was skeptical when I first encountered an ORM. I wasn't willing to surrender the joy of meticulously crafting the perfect SQL and let ORM do all the work.</p>
+<p>Nevertheless, my perspective on ORMs has evolved. I have realised they are useful abstractions. They help in effective software development. ORMs give us minimal context switching between our chosen programming language and SQL.</p>
+<p>I observed that, even with less control over fine-tuning, I could write code more succinctly. I also reused my code conveniently, which meant that I developed software faster. On Django web framework's ORM, I use it's Manager and QuerySet classes to chain SQL clauses, reuse methods across the codebase, work well with other aspects like pagination or authorization. Additionally, auto-generated database migration files are wonderful.</p>
+<p>That being said, it does not mean that I can disregard SQL. Like any other tool, an ORM's effectiveness depends on how I use it. It's easy to unwittingly write ORM queries that result in unseen queries or fetch large amounts of data. For more complex use cases, having full control over the executed queries is crucial.</p>
+<p>ORM serves as an abstraction. We use abstractions all the time in software. SQL is also an abstraction over the internals of a database. Sometimes we build our own abstractions and sometimes it makes more sense to use existing ones.</p>
+<p>As Joel Spolsky stated in his "law of leaky abstractions" all non-trivial abstractions are leaky. When such leaks occur in my ORM, I will be prepared to put on my SQL plumbing hat.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/backend-user-experience.html" rel="bookmark"
+                           title="Permalink to 🌟 How can a backend developer contribute to a seamless user experience? 🌟">🌟 How can a backend developer contribute to a seamless user experience? 🌟</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2023-06-19T20:00:00+01:00">
+                Published: Mon 19 June 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/user-experience.html">user-experience</a>.</p>
+<p>tags: <a href="/tag/backend-engineering.html">backend engineering</a> <a href="/tag/database.html">database</a> </p>
+</footer><!-- /.post-info -->                <p>As a backend developer, it's easy to get lost behind multiple layers of the modern tech stack and focus solely on reading and writing data through the plumbing of software systems. However, it's important to recognize the impact we can have in contributing positively to the user experience. Our goal …</p>
+                <a class="readmore" href="/backend-user-experience.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/norm-vs-denorm.html" rel="bookmark"
+                           title="Permalink to 🔄 Tradeoff between Normalisation and Denormalisation when Scaling Your API 📈🔁">🔄 Tradeoff between Normalisation and Denormalisation when Scaling Your API 📈🔁</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2023-05-30T20:00:00+01:00">
+                Published: Tue 30 May 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/databases.html">databases</a>.</p>
+
+</footer><!-- /.post-info -->                <p>There's something I have managed to crystallise for myself. As a Backend Engineer, I deal with designing relational database models often. Modelling the database is a crucial step in getting the API right in any modern application.</p>
+<p>There is a delicate trade-off between normalisation and denormalisation while modelling a relational …</p>
+                <a class="readmore" href="/norm-vs-denorm.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/5-simple-recursion-programs-in-python.html" rel="bookmark"
+                           title="Permalink to "5 Simple Recursion Programs in Python."">"5 Simple Recursion Programs in Python."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-09-05T20:00:01+05:30">
+                Published: Sat 05 September 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/python.html">python</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> <a href="/tag/orm.html">orm</a> </p>
+</footer><!-- /.post-info -->                <p>Here are 5 simple Python recursive functions that will get you started with the practicing recursion.</p>
+<p>These are exercise problems taken from the book - <em>Data Structures and Algorithms in Python Michael H. Goldwasser, Michael T. Goodrich, and Roberto Tamassia</em></p>
+<h3>Write a short recursive Python function that finds the minimum and …</h3>
+                <a class="readmore" href="/5-simple-recursion-programs-in-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/learn-by-building-a-data-pipeline-part-0.html" rel="bookmark"
+                           title="Permalink to "Learn By Building A Data Pipeline – Part 0"">"Learn By Building A Data Pipeline –  Part 0"</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-03-28T12:00:01+05:30">
+                Published: Sat 28 March 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
+</footer><!-- /.post-info -->                <p>I just wanted to build something where I will be forced to explore and learn new things. I didn’t really know where to start so I started going back to one thing I have always thought had the potential to build interesting things. Reddit’s PRAW library, which is …</p>
+                <a class="readmore" href="/learn-by-building-a-data-pipeline-part-0.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/managing-python-dependencies-robustly.html" rel="bookmark"
+                           title="Permalink to "Managing Python Dependencies Robustly."">"Managing Python Dependencies Robustly."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-10-01T12:00:01+05:30">
+                Published: Mon 01 October 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
+</footer><!-- /.post-info -->                <p>I wanted to write a blog post about something I learned this week. We use a standard set of open source packages in our projects. Almost all of them are pretty stable and cause no problems, but on some rare occasions, rarer than in the case of code I write …</p>
+                <a class="readmore" href="/managing-python-dependencies-robustly.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/richard-hamming-you-and-your-research.html" rel="bookmark"
+                           title="Permalink to "Richard Hamming, You and Your Research"">"Richard Hamming, You and Your Research"</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-04-02T22:00:01+05:30">
+                Published: Mon 02 April 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+
+</footer><!-- /.post-info -->                <p>This is one of those things when I first saw, I asked myself why couldn't I have watched this earlier. I really can't tell if it would have made any difference had I watched this lecture 10 years ago, but I cannot stop myself from wondering about it. </p>
+<p>Richard Hamming …</p>
+                <a class="readmore" href="/richard-hamming-you-and-your-research.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/observations-on-api-design.html" rel="bookmark"
+                           title="Permalink to "Observations on API Design."">"Observations on API Design."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-22T20:00:01+05:30">
+                Published: Thu 22 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+<p>tags: <a href="/tag/api-design.html">api-design</a> <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
+</footer><!-- /.post-info -->                <p>There are a lot of resources regarding designing good APIs. I personally found <a href="https://www.youtube.com/watch?v=aAb7hSCtvGw">the talk from Joshua Bloch</a> to be highly informative.  I can also add Martin Fowler's articles and talks, along the with highly recommended book "Design Patterns" by Erich Gamma et al., as good sources to refer when …</p>
+                <a class="readmore" href="/observations-on-api-design.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/learning-to-work-on-existing-codebases.html" rel="bookmark"
+                           title="Permalink to "Learning to work on existing codebases."">"Learning to work on existing codebases."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-07T20:00:01+05:30">
+                Published: Wed 07 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+
+</footer><!-- /.post-info -->                <p><img alt="Staring at complex systems." src="http://orig07.deviantart.net/363d/f/2014/280/7/7/engine_maintenance_by_macrebisz-d81pr2o.jpg"></p>
+<p>Working with legacy code is probably the most common part of a developer’s job in the software industry. Unless you’re only going to work in super early phase startups or constantly get assigned to <a href="https://en.wikipedia.org/wiki/Greenfield_project">greenfield</a> projects, you <em>will</em> encounter legacy code. There are many articles written on the …</p>
+                <a class="readmore" href="/learning-to-work-on-existing-codebases.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/mistakes-and-learnings.html" rel="bookmark"
+                           title="Permalink to "Mistakes and Learnings."">"Mistakes and Learnings."</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-08-07T20:00:01+05:30">
+                Published: Mon 07 August 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+
+</footer><!-- /.post-info -->                <p>It’s been over a year since I have started working at my current company. There have been lots of ups and downs. I know that’s a cliched thing to say, but it’s true. In this post, I have decided to really introspect over some of the mistakes …</p>
+                <a class="readmore" href="/mistakes-and-learnings.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+    Page 1 / 2
+        <a href="/index2.html">&raquo;</a>
+        <a href="/index2.html">&#8649;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
