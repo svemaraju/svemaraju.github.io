@@ -6,7 +6,7 @@
         <meta name="generator" content="Pelican" />
         <title>Using an ORM over writing raw SQL queries ...</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
-        <meta name="description" content="I hear strong opinions among developers for both ways of working with relational database. Common reasons in favour of raw SQL: - We can optimise..." />
+        <meta name="description" content="I hear strong opinions among developers for both ways of working with relational database. Common reasons in favour of raw SQL: We can optimise..." />
 </head>
 
 <body id="index" class="home">
@@ -39,9 +39,15 @@
 <p>In <a href="/category/databases.html">databases</a>.</p>
 <p>tags: <a href="/tag/backend-engineering.html">backend engineering</a> <a href="/tag/database.html">database</a> <a href="/tag/orm.html">orm</a> </p>
 </footer><!-- /.post-info -->      <p>I hear strong opinions among developers for both ways of working with relational database.</p>
-<p>Common reasons in favour of raw SQL:
-- We can optimise queries for performance. ORMs can be limited in ways they can be customised, and writing raw SQL allows more control over the craft.
-- We have less overhead. ORM, which stands for object-relational mapping, creates an object (like a Python object) for each of the database records. This additional processing time in object creation can become significant, particularly for queries with large result sets.</p>
+<p>Common reasons in favour of raw SQL:</p>
+<ul>
+<li>
+<p>We can optimise queries for performance. ORMs can be limited in ways they can be customised, and writing raw SQL allows more control over the craft.</p>
+</li>
+<li>
+<p>We have less overhead. ORM, which stands for object-relational mapping, creates an object (like a Python object) for each of the database records. This additional processing time in object creation can become significant, particularly for queries with large result sets.</p>
+</li>
+</ul>
 <p>These are the main technical reasons. However, I think there is a reluctance among developers who have already mastered the craft of SQL to adopt ORMs. As someone who started their programming career writing PL/SQL, I was skeptical when I first encountered an ORM. I wasn't willing to surrender the joy of meticulously crafting the perfect SQL and let ORM do all the work.</p>
 <p>Nevertheless, my perspective on ORMs has evolved. I have realised they are useful abstractions. They help in effective software development. ORMs give us minimal context switching between our chosen programming language and SQL.</p>
 <p>I observed that, even with less control over fine-tuning, I could write code more succinctly. I also reused my code conveniently, which meant that I developed software faster. On Django web framework's ORM, I use it's Manager and QuerySet classes to chain SQL clauses, reuse methods across the codebase, work well with other aspects like pagination or authorization. Additionally, auto-generated database migration files are wonderful.</p>
