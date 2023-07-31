@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Start by writing messy code</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <meta name="description" content="The conventional wisdom in software engineering advocates for breaking down code into loosely coupled functions, classes, and modules, among other..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Srikanth Vemaraju</a></h1>
+                <nav><ul>
+                    <li><a href="/category/databases.html">databases</a></li>
+                    <li><a href="/category/python.html">python</a></li>
+                    <li class="active"><a href="/category/software-engineering.html">software-engineering</a></li>
+                    <li><a href="/category/user-experience.html">user-experience</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/messy-code.html" rel="bookmark"
+           title="Permalink to Start by writing messy code">Start by writing messy code</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2023-07-31T20:00:00+01:00">
+                Published: Mon 31 July 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
+        </address>
+<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/design.html">design</a> </p>
+</footer><!-- /.post-info -->      <p>The conventional wisdom in software engineering advocates for breaking down code into loosely coupled functions, classes, and modules, among other things. Numerous books and blog posts discuss various approaches that help us achieve the best possible design for our code.</p>
+<p>Sometimes, we may get lucky and find a design pattern that perfectly matches our business logic. However, there's a risk of making premature assumptions, which can result in our code being misaligned with the business problem.</p>
+<p>I propose an alternate approach that may sound counterintuitive.</p>
+<p>Start by writing <em>messy</em> code—-messy code that diverges from the traditional "clean" code, following design patterns, programming paradigms, or any opinionated design methodologies.</p>
+<h2>What do I mean by <em>messy</em> code here?</h2>
+<p>I begin by putting all my code in a single function (or method). This means disregarding principles like Separation of Concerns, Single Responsibility Principle, or even DRY (Don't Repeat Yourself).</p>
+<p>Then, I write tests to verify that my code works.</p>
+<p>At this point, I am technically ready to open a Pull Request, meaning somebody will need to read my code and review it. This is when I check my code for readability.</p>
+<p>Based on my experience, having as much context available in one place makes code more readable. When I have a function with all the code in it, I have all the context I need to inform my design. If I feel the code is unreadable, I break the large function into meaningful blocks. On the contrary, figuring out the building blocks from scratch would take me much longer.</p>
+<p>Having all the code in one place can be considered messy, but it is much more malleable than having code implemented in mismatched design pattern.</p>
+<h2>What about working with existing codebase?</h2>
+<p>An existing codebase may have predefined patterns. But that doesn't mean they should be unchangeable. As described above, these patterns may be a perfect fit. In that case we use them to inform the design of new features. But if they aren't, there is no reason why we should stick to them for all future code. </p>
+<p>If all future implementation is dictated by initial design decisions, then it means that our software is hard to change. Software is supposed to "soft" i.e. easy to change. Change is a good indicator of a healthy and successful software project.</p>
+<h2>How did I arrive here?</h2>
+<p>My fascination with architectural patterns and design methodologies began early in my career. Initially, I felt embarrassed by my code, which worked perfectly but lacked the elegance of a well-designed system. To address this, I immersed myself in studying design patterns, only to later realize that many of these patterns were primarily designed for Object-Oriented Programming. As I continued to develop my coding skills in Python, a more flexible language, I learned the importance of seeking design patterns native to Python.</p>
+<p>Over time, I also encountered counterarguments such as WET (Write Everything Twice) versus DRY (Don't Repeat Yourself), which expanded my perspective on coding.</p>
+<p>Given the abundance of strongly worded literature in the software industry, it is easy to become too fixated on the means of accomplishing our tasks and lose sight of our ultimate goals. Therefore, I find it valuable to approach coding from a first principles perspective—breaking down a problem into its fundamental elements and rebuilding a solution from those elements. Starting with messy code represents my personal approach to this philosophy, and I encourage you to find your unique path in coding as well.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
