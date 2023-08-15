@@ -15,42 +15,29 @@
                     <li><a href="/category/databases.html">databases</a></li>
                     <li><a href="/category/python.html">python</a></li>
                     <li class="active"><a href="/category/software-engineering.html">software-engineering</a></li>
+                    <li><a href="/category/thoughts-on-software-design.html">Thoughts on Software Design</a></li>
                     <li><a href="/category/user-experience.html">user-experience</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/messy-code.html">Start by writing messy code</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2023-07-31T20:00:00+01:00">
-                Published: Mon 31 July 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/design.html">design</a> </p>
-</footer><!-- /.post-info --><p>The conventional wisdom in software engineering advocates for breaking down code into loosely coupled functions, classes, and modules, among other things. Numerous books and blog posts discuss various approaches that help us achieve the best possible design for our code.</p>
-<p>Sometimes, we may get lucky and find a design pattern that perfectly matches our business logic. However, there's a risk of making premature assumptions, which can result in our code being misaligned with the business problem.</p>
-<p>I propose an alternate approach that may sound counterintuitive.</p>
-<p>Start by writing <em>messy</em> code—-messy code that diverges from the traditional "clean" code, following design patterns, programming paradigms, or any opinionated design methodologies.</p>
-<p><img alt="start by writing messy code" src="/images/messy-code.png"></p>
-<h2>What do I mean by <em>messy</em> code here?</h2>
-<p>I begin by putting all my code in a single function (or method). This means disregarding principles like Separation of Concerns, Single Responsibility Principle, or even DRY (Don't Repeat Yourself).</p>
-<p>Then, I write tests to verify that my code works.</p>
-<p>At this point, I am technically ready to open a Pull Request, meaning somebody will need to read my code and review it. This is when I check my code for readability.</p>
-<p>Based on my experience, having as much context available in one place makes code more readable. When I have a function with all the code in it, I have all the context I need to inform my design. If I feel the code is unreadable, I break the large function into meaningful blocks. On the contrary, figuring out the building blocks from scratch would take me much longer.</p>
-<p>Having all the code in one place can be considered messy, but it is much more malleable than having code implemented in mismatched design pattern.</p>
-<h2>What about working with existing codebase?</h2>
-<p>An existing codebase may have predefined patterns. But that doesn't mean they should be unchangeable. As described above, these patterns may be a perfect fit. In that case we use them to inform the design of new features. But if they aren't, there is no reason why we should stick to them for all future code. </p>
-<p>If all future implementation is dictated by initial design decisions, then it means that our software is hard to change. Software is supposed to be "soft" i.e. easy to change, and change is a good indicator of a healthy and successful software project.</p>
-<h2>How did I arrive here?</h2>
-<p>My fascination with architectural patterns and design methodologies began early in my career. Initially, I felt embarrassed by my code, which worked perfectly but lacked the elegance of a well-designed system. To address this, I immersed myself in studying design patterns, only to later realize that many of these patterns were primarily designed for Object-Oriented Programming. As I continued to develop my coding skills in Python, a more flexible language, I learned the importance of seeking design patterns native to Python.</p>
-<p>Over time, I also encountered counterarguments such as WET (Write Everything Twice) versus DRY (Don't Repeat Yourself), which expanded my perspective on coding.</p>
-<p>Given the abundance of strongly worded literature in the software industry, it is easy to become too fixated on the means of accomplishing our tasks and lose sight of our ultimate goals. Therefore, I find it valuable to approach coding from a first principles perspective—breaking down a problem into its fundamental elements and rebuilding a solution from those elements. Starting with messy code represents my personal approach to this philosophy, and I encourage you to find your unique path in coding as well.</p>
-<p>If you liked reading this post, you can follow me on <a href="https://www.linkedin.com/in/srikanthvemaraju/">LinkedIn</a> for more.</p>                </article>
+                    <h1 class="entry-title"><a href="/learning-to-work-on-existing-codebases.html">"Learning to work on existing codebases."</a></h1>
+                    <p>Working with legacy code is probably the most common part of a developer’s job in the software industry. Unless you’re only going to work in super early phase startups or constantly get assigned to <a href="https://en.wikipedia.org/wiki/Greenfield_project">greenfield</a> projects, you <em>will</em> encounter legacy code. There are many articles written on the internet talking about how to successfully understand and contribute to existing codebases. I am going to talk about two such instances in my not so long career, where I have had some what different results in attempting to familiarise an existing codebase. But before that let me share some of my observations. </p>
+<p>I would say there are about three factors that help in understanding a repo authored by someone else. Firstly, how well acquainted are you with the programming language and the framework used. Software is built on abstractions and one of the major layer of abstraction is the programming language itself. If you’re trying to figure out a Ruby-on-Rails project, you have to start with understanding Ruby first (see 1). I know this is super obvious to most programmers, but it may not be for some people working in the software industry, which sometimes results in people getting assigned to projects they are not suited for.</p>
+<p>Some languages might be similar enough that if you know X, you can learn Y easily. But in some cases it may not work that way. As a python developer I can probably pick up ruby <em>on the job</em> with considerable effort, but I am not sure about if it’s the same with something like Clojure or Erlang. If you’re working on web development projects then the framework too plays an important factor in grokking the codebase. Transitioning from Flask to Django was almost seamless for me, but something like Tornado or Twisted might have proved more challenging. </p>
+<p>Another key factor in grasping the ins and outs of a codebase is having a nifty toolset. Although intuition does help to a certain extent, you have to get your hands dirty at some point if you want to consistently solve problems. Whether it’s an IDE, a debugger, logging frameworks or simply knowing your way around Linux shell, these tools help you gain a better picture of the application in a huge way.<a href="https://www.getpostman.com/">Postman</a> makes a regular appearance in my API debugging encounters. So does pouring over git commits and checking git blame. Context matters while debugging a particular piece of code, and if the author of the repo is unreachable (which is the case 9 times out of 10) you will have to gather context in whichever way possible. Your toolset will play a major role in doing that. </p>
+<p>Lastly, there’s the functionality of the application. If you don’t know what your application does, you may not get to figuring out how it does that. However functional knowledge, in my experience has been very difficult to communicate. Functional requirements evolve over time, and if it is not constantly documented you are often left with incomplete and incorrect picture of your project. The only thing that helps here is <a href="https://jvns.ca/blog/2014/06/13/asking-questions-is-a-superpower/">asking questions</a> and accurately communicating your understanding to avoid <a href="http://i0.kym-cdn.com/photos/images/newsfeed/000/210/119/9b3.png">misunderstanding or .. uhmm .. miscommunication</a>. But if you do somehow get hold of the functional knowledge then it is going to be a significant addition to your arsenal, in terms of identifying and solving problems.</p>
+<hr>
+<p>On a good day, I have sometimes pictured myself to be something like Zach Galifianakis playing black jack in the movie Hangover. Although a developer figuring out the root cause for a problem might not make an engaging movie scene, it is definitely engaging to some developers in the room. I am sure each one of us can remember at least one instance of being in awe, watching someone solve a problem that seemed mysterious to us. The following experience is probably the exact opposite.</p>
+<p><img alt="Me in my head while debugging something" src="https://media.tenor.co/images/3ef34f6cc6f98e888f8fd69245ee3e44/raw"></p>
+<p>I was once asked to go through a PHP repository and quickly pick it up to a level that I can start making changes to it. I had been working with Python for a year at that point, but never had a chance to learn or try out PHP. I eventually managed to get a hold of it enough, but I did struggle to do it on time. It was not just a collection of PHP scripts supporting a web site that I was asked to master, but rather it was a full fledged project built on a comprehensive framework. </p>
+<p>Often times I hear people talking about the state of projects that they are assigned to, and justifiably so. But it was completely opposite in my case. The developers had put together the project in a masterful way using appropriate design patterns and keeping it almost <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY</a>. And I on the other hand was someone who was used to hacking out quick solutions to most problems without knowing the existence of patterns. So it was trying to figure how this thing worked, that was built on this another thing that I don’t know, and also built in a way that left me befuddled. </p>
+<p>Being a novice, I clearly struggled. The lesson I learnt was that I cannot be learning both the language and the framework simultaneously. Although related, they are solving two different problems. It was silly to have underestimated the task, but thankfully I eventually got hold of it.</p>
+<p>Recently I started on a new job. I got assigned to the Support team. I am supposed to switch between 3-5 projects depending on the tickets being raised. All of them written by someone else and already in production. I might write a different blog post about how it’s like to work as a full-time support developer, but the core of what I do is try and understand existing codebases on a daily basis. This time I have yielded fairly positive results until now. The tools are somewhat new, but the project being in Python and Django helped me lot in ramping up quickly. Django forces you to write code in a certain way, models - views - templates, it becomes quite straightforward for someone experienced in Django to understand any project written in Django. That holds the same for PHP-Symfony or Ruby-on-Rails.</p>
+<p>There are probably some really important things that I have missed here, for e.g.: running the tests, using the debugger, and some other things which I haven’t come across yet. But all in all, I wanted to share some thoughts on what I consider the basics of understanding legacy code. Please do share your thoughts and comments below.</p>
+<p>(1): I was once given a take home interview projects. They wanted me to debug a Ruby-on-Rails application. I started by going through a lengthy Ruby-on-Rails tutorial only to realise after like 40%, that I should be going through a Ruby tutorial first. Needless to say, I didn’t even complete the take home interview.</p>
+<p>PS: Image credit - https://macrebisz.deviantart.com/</p>                </article>
             </aside><!-- /#featured -->
                 <section id="content" class="body">
                     <h1>Other articles</h1>
@@ -59,209 +46,13 @@
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/maintainer-mindset.html" rel="bookmark"
-                           title="Permalink to How I developed a maintainer mindset?">How I developed a maintainer mindset?</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-07-26T20:00:00+01:00">
-                Published: Wed 26 July 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-<p>tags: <a href="/tag/career.html">career</a> </p>
-</footer><!-- /.post-info -->                <p>Lurking on the internet forums related to software engineering, you will often find people asking questions like:</p>
-<ul>
-<li>Is getting accepting a support role bad for your career?</li>
-<li>How do I get out of a support job?</li>
-<li>Is technical support experience valuable? </li>
-</ul>
-<p>I found myself asking these same questions some years …</p>
-                <a class="readmore" href="/maintainer-mindset.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/what-is-deployment.html" rel="bookmark"
-                           title="Permalink to Deploying software is like opening a bakery 🧁">Deploying software is like opening a bakery 🧁</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-07-22T20:00:00+01:00">
-                Published: Sat 22 July 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-<p>tags: <a href="/tag/backend-engineering.html">backend engineering</a> <a href="/tag/beginners.html">beginners</a> </p>
-</footer><!-- /.post-info -->                <p>What the hell is a deployment? That's what my wife asked me when she came across this word on her beginner's IT course. </p>
-<p>I was honestly stumped. </p>
-<p>Sofware development is full of jargon. As I have spent years working in this field I have developed a habit of collecting the …</p>
-                <a class="readmore" href="/what-is-deployment.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/learn-by-building-a-data-pipeline-part-0.html" rel="bookmark"
-                           title="Permalink to "Learn By Building A Data Pipeline – Part 0"">"Learn By Building A Data Pipeline –  Part 0"</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2020-03-28T12:00:01+05:30">
-                Published: Sat 28 March 2020
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
-</footer><!-- /.post-info -->                <p>I just wanted to build something where I will be forced to explore and learn new things. I didn’t really know where to start so I started going back to one thing I have always thought had the potential to build interesting things. Reddit’s PRAW library, which is …</p>
-                <a class="readmore" href="/learn-by-building-a-data-pipeline-part-0.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/managing-python-dependencies-robustly.html" rel="bookmark"
-                           title="Permalink to "Managing Python Dependencies Robustly."">"Managing Python Dependencies Robustly."</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-10-01T12:00:01+05:30">
-                Published: Mon 01 October 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
-</footer><!-- /.post-info -->                <p>I wanted to write a blog post about something I learned this week. We use a standard set of open source packages in our projects. Almost all of them are pretty stable and cause no problems, but on some rare occasions, rarer than in the case of code I write …</p>
-                <a class="readmore" href="/managing-python-dependencies-robustly.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/richard-hamming-you-and-your-research.html" rel="bookmark"
-                           title="Permalink to "Richard Hamming, You and Your Research"">"Richard Hamming, You and Your Research"</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-04-02T22:00:01+05:30">
-                Published: Mon 02 April 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-
-</footer><!-- /.post-info -->                <p>This is one of those things when I first saw, I asked myself why couldn't I have watched this earlier. I really can't tell if it would have made any difference had I watched this lecture 10 years ago, but I cannot stop myself from wondering about it. </p>
-<p>Richard Hamming …</p>
-                <a class="readmore" href="/richard-hamming-you-and-your-research.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/observations-on-api-design.html" rel="bookmark"
-                           title="Permalink to "Observations on API Design."">"Observations on API Design."</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-03-22T20:00:01+05:30">
-                Published: Thu 22 March 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-<p>tags: <a href="/tag/api-design.html">api-design</a> <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
-</footer><!-- /.post-info -->                <p>There are a lot of resources regarding designing good APIs. I personally found <a href="https://www.youtube.com/watch?v=aAb7hSCtvGw">the talk from Joshua Bloch</a> to be highly informative.  I can also add Martin Fowler's articles and talks, along the with highly recommended book "Design Patterns" by Erich Gamma et al., as good sources to refer when …</p>
-                <a class="readmore" href="/observations-on-api-design.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/learning-to-work-on-existing-codebases.html" rel="bookmark"
-                           title="Permalink to "Learning to work on existing codebases."">"Learning to work on existing codebases."</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-02-07T20:00:01+05:30">
-                Published: Wed 07 February 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-
-</footer><!-- /.post-info -->                <p>Working with legacy code is probably the most common part of a developer’s job in the software industry. Unless you’re only going to work in super early phase startups or constantly get assigned to <a href="https://en.wikipedia.org/wiki/Greenfield_project">greenfield</a> projects, you <em>will</em> encounter legacy code. There are many articles written on the …</p>
-                <a class="readmore" href="/learning-to-work-on-existing-codebases.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
                     <h1><a href="/mistakes-and-learnings.html" rel="bookmark"
                            title="Permalink to "Mistakes and Learnings."">"Mistakes and Learnings."</a></h1>
                 </header>
 
                 <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2017-08-07T20:00:01+05:30">
-                Published: Mon 07 August 2017
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-
-</footer><!-- /.post-info -->                <p>It’s been over a year since I have started working at my current company. There have been lots of ups and downs. I know that’s a cliched thing to say, but it’s true. In this post, I have decided to really introspect over some of the mistakes …</p>
+                <p>It’s been over a year since I have started working at my current company. There have been lots of ups and downs. I know that’s a cliched thing to say, but it’s true. In this post, I have decided to really introspect over some of the mistakes …</p>
                 <a class="readmore" href="/mistakes-and-learnings.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/at-the-outset.html" rel="bookmark"
-                           title="Permalink to "At the outset.."">"At the outset.."</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2017-05-02T20:00:01+05:30">
-                Published: Tue 02 May 2017
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-
-</footer><!-- /.post-info -->                <p>Like many, I too have been contemplating to start blogging. And here I am, after many false starts, finally starting to put words onto the internet. </p>
-<p>My intentions here are very simple. I just want to log my learnings and observations, as I begin to transition from being a novice …</p>
-                <a class="readmore" href="/at-the-outset.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->

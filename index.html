@@ -12,45 +12,101 @@
         <header id="banner" class="body">
                 <h1><a href="/">Srikanth Vemaraju</a></h1>
                 <nav><ul>
-                    <li><a href="/category/databases.html">databases</a></li>
-                    <li><a href="/category/python.html">python</a></li>
-                    <li><a href="/category/software-engineering.html">software-engineering</a></li>
-                    <li><a href="/category/user-experience.html">user-experience</a></li>
+                    <li><a href="/category/databases.html">Databases</a></li>
+                    <li><a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a></li>
+                    <li><a href="/category/python.html">Python</a></li>
+                    <li><a href="/category/reading.html">Reading</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/messy-code.html">Start by writing messy code</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2023-07-31T20:00:00+01:00">
-                Published: Mon 31 July 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/design.html">design</a> </p>
-</footer><!-- /.post-info --><p>The conventional wisdom in software engineering advocates for breaking down code into loosely coupled functions, classes, and modules, among other things. Numerous books and blog posts discuss various approaches that help us achieve the best possible design for our code.</p>
-<p>Sometimes, we may get lucky and find a design pattern that perfectly matches our business logic. However, there's a risk of making premature assumptions, which can result in our code being misaligned with the business problem.</p>
-<p>I propose an alternate approach that may sound counterintuitive.</p>
-<p>Start by writing <em>messy</em> code—-messy code that diverges from the traditional "clean" code, following design patterns, programming paradigms, or any opinionated design methodologies.</p>
-<p><img alt="start by writing messy code" src="/images/messy-code.png"></p>
-<h2>What do I mean by <em>messy</em> code here?</h2>
-<p>I begin by putting all my code in a single function (or method). This means disregarding principles like Separation of Concerns, Single Responsibility Principle, or even DRY (Don't Repeat Yourself).</p>
-<p>Then, I write tests to verify that my code works.</p>
-<p>At this point, I am technically ready to open a Pull Request, meaning somebody will need to read my code and review it. This is when I check my code for readability.</p>
-<p>Based on my experience, having as much context available in one place makes code more readable. When I have a function with all the code in it, I have all the context I need to inform my design. If I feel the code is unreadable, I break the large function into meaningful blocks. On the contrary, figuring out the building blocks from scratch would take me much longer.</p>
-<p>Having all the code in one place can be considered messy, but it is much more malleable than having code implemented in mismatched design pattern.</p>
-<h2>What about working with existing codebase?</h2>
-<p>An existing codebase may have predefined patterns. But that doesn't mean they should be unchangeable. As described above, these patterns may be a perfect fit. In that case we use them to inform the design of new features. But if they aren't, there is no reason why we should stick to them for all future code. </p>
-<p>If all future implementation is dictated by initial design decisions, then it means that our software is hard to change. Software is supposed to be "soft" i.e. easy to change, and change is a good indicator of a healthy and successful software project.</p>
-<h2>How did I arrive here?</h2>
-<p>My fascination with architectural patterns and design methodologies began early in my career. Initially, I felt embarrassed by my code, which worked perfectly but lacked the elegance of a well-designed system. To address this, I immersed myself in studying design patterns, only to later realize that many of these patterns were primarily designed for Object-Oriented Programming. As I continued to develop my coding skills in Python, a more flexible language, I learned the importance of seeking design patterns native to Python.</p>
-<p>Over time, I also encountered counterarguments such as WET (Write Everything Twice) versus DRY (Don't Repeat Yourself), which expanded my perspective on coding.</p>
-<p>Given the abundance of strongly worded literature in the software industry, it is easy to become too fixated on the means of accomplishing our tasks and lose sight of our ultimate goals. Therefore, I find it valuable to approach coding from a first principles perspective—breaking down a problem into its fundamental elements and rebuilding a solution from those elements. Starting with messy code represents my personal approach to this philosophy, and I encourage you to find your unique path in coding as well.</p>
-<p>If you liked reading this post, you can follow me on <a href="https://www.linkedin.com/in/srikanthvemaraju/">LinkedIn</a> for more.</p>                </article>
+                    <h1 class="entry-title"><a href="/how-do-millions-of-people-book-meetings-with-god.html">How do millions of people book meetings with God?</a></h1>
+                    <p>Have you ever experienced the rush of online shopping? I bet you felt an adrenaline rush as you clicked through the website, competing with thousands or even millions of people at the same time.</p>
+<p>Top software companies are behind some of these websites. They are capable of serving millions of users simultaneously. In this blog post I write about an online booking system that you may not have heard about. It is the system powering the booking process of <a href="https://www.guinnessworldrecords.com/world-records/most-visited-hindu-temple-">the most visited Hindu Temple, Tirumala</a>. </p>
+<p><a href="https://www.tirumala.org/">Tirumala Tirupati Devasthanam</a> is the independent trust which manages the aforementioned popular temple in the state of Andhra Pradesh, India.</p>
+<p>My family visits this temple often. I have seen the evolution of the digital systems empowering the temple through the years. I was planning to visit the temple last year, first time after the pandemic, and was stuck by the new online booking experience. Initally I attributed the extreme scarcity of their entry tickets to rapid digitalisation India has seen in the past few years. Although that does play a part, what I have found by looking through a system design lens was a fascinating learning experience. </p>
+<p>My intention is to share my analysis and if possible start a discussion around promoting user centric design in Indian public digital services. <strong>I do not intend to disparage the current developers of the TTD booking system. I am only exercising my curiousity in this topic.</strong></p>
+<p><img alt="daily attendance at Tirumala" src="/images/ttd_attendance.png"></p>
+<p>In this blog post I write:</p>
+<ol>
+<li><strong>An overview of the TTD online booking system:</strong> Visualising the user journey through the booking process. </li>
+<li><strong>How does it fare in practice:</strong> Brief look at how the system performs in real world and common user complaints.</li>
+<li><strong>Hard challenges:</strong> What are the common challenges faced in designing highly scalable and concurrent systems?</li>
+<li><strong>Analysing the weakness:</strong> I attempt to explain the critical pain points of the system borne out of its design.</li>
+<li><strong>Ways to improve:</strong> I conclude by suggesting ways to enhance the user experience. I offer solutions which are both techincal and product design focussed.</li>
+</ol>
+<h2>How does the booking system work?</h2>
+<h3>The bookings become LIVE at a certain time.</h3>
+<ul>
+<li>Bookings are open at a specific date and time. This information is published on the TTD website and their social media. They also run a TV and Youtube channel where the information is displayed in their ticker scroll.</li>
+<li>There are many types of services that can be booked and each of them are made available at different times. We will look at one type of service called Special Entry Darshan. "Darshan" is loosely translated to "a viewing" or more precisely it is an opportunity to be in the presence of a God (in a temple).</li>
+<li>The bookings for a following month are usually available in the last week of current month. However the actual dates are not fixed. In my experience, the bookings were made available for the following two months, instead of one, at the same time. That means we'll need to keep eyes and ears opened to learn about the opening times. I haven't used the app so I am not sure if they have any push notifications to notify announcements. 👀</li>
+</ul>
+<p><img alt="journey of a booking at TTD website" src="/images/system-overview.png"></p>
+<h3>You must be prepared to grab your slot.</h3>
+<ul>
+<li>People are required to be registered on the website with their email and phone number. One can login to the website using phone number and a one-time password sent via SMS.</li>
+<li>Let's say the bookings are going live at 10AM on Friday. We need to be logged-in on the app or website as close to 10AM as possible. We would get auto logged out in 10-15 minutes so timing is important. 🕰</li>
+</ul>
+<h3>It's time for some speedy mouse clicks!</h3>
+<ul>
+<li>After you have logged in and you click on the Special Entry Darshan from the "Online Services" menu you will be shown a countdown timer. You are essentially in a virtual waiting room to be let in. It seems like the time can vary depending on the traffic.</li>
+<li>Now we are finally in. We see a calendar interface with, hopefully, lots of open slots to book. Now we need to select a date and time slot to book tickets.</li>
+<li>After we enter number of people who are going to attend, we will be redirected to a page that asks us fill in details of each attendee. There are 2 dropdowns and 3 free text fields for each attendee. We fill everything correctly and get directed to a payment page.</li>
+<li>There are several options to pay, we select one and complete the payment. Finally we get redirected to a success page where there is a booking reference number and details about how to download the booking confirmation.</li>
+</ul>
+<h2>So how does the system perform?</h2>
+<ul>
+<li>We saw quite a few steps there and you can see that there is lot of work went into implementing the system.</li>
+<li>I observe some pain points here. Firstly, the wait time to enter the booking system is bit opaque and doesn't make the experience smooth. (I know why this wait time is being used, we will talk about it in the next section.) Secondly there are lots of information to fill before finalising payment.</li>
+<li>Both of the above slow down the user to complete the booking. I have personally experienced this and so have many others. By the time we are able to fill all the details and click continue, we are shown an error that "the slot was just booked by another pilgrim".</li>
+</ul>
+<h2>What are the challenges here?</h2>
+<ul>
+<li>We know that building software that attracts traffic in millions is hard. It requires real technical skills to ensure the system can handle the peak time traffic.</li>
+<li>Let's see what are the technical challenges in some detail. The obvious is to just being able to serve the peak time traffic. I am not aware of the internals but I can guess that there is a load balancer sitting in front of multiple servers or containers to manage load. Since the bookings go LIVE at a certain time, preemptively increasing the server capacity is good way to deal with this situation.</li>
+<li>In one of the <a href="https://news.tirumala.org/good-response-to-ttd-online-booking-of-sed-ttd-additional-eo/">press releases</a>, TTD stated that after the launch of the new booking system they saw 2,40,000 tickets booked within an hour. Around 900,000 concurrent sessions were open at the peak time. And, a total of 10 million hits were recorded by the system on that day.</li>
+<li>Creating a booking system capable of serving 1 million simultaneous users and managing 240,000 available tickets involves navigating issues related to scalability, performance, and data integrity. The system must be designed to distribute traffic across servers, optimize database operations, minimize latency, and handle potential security threats. Ensuring efficient network utilization and maintaining responsiveness while handling such substantial user demand are key concerns.</li>
+<li>Preventing multiple users from booking the same ticket concurrently presents intricate challenges. These involve mitigating race conditions, maintaining atomicity throughout multi-step booking processes, and handling the intricacies of reservation periods. Implementing effective locks and concurrency control mechanisms to avoid data inconsistency, deadlocks, and redundant booking requests is essential. Striking the right balance between ensuring data integrity and providing a seamless user experience remains a complex task.</li>
+<li>But also this is product design challenge. Ultimately the goal of this system to facilitate problem-free booking. To overcome the technical challenges, there have been design decisions made here. The big one is the virtual queue. The intention is to hold people in queue so that the main system is not overwhelmed by load.</li>
+</ul>
+<h2>What problems do I see in current design</h2>
+<p><img alt="Design flaw in the system" src="/images/virtual-queue-design-flaw.png"></p>
+<ul>
+<li>I think the biggest problem is users reaching 1 step before payment and being told that the ticket is already booked by someone. Why does that happen? When we select the online booking service we are first added to a virtual queue. The waiting time in the queue is proportional to the traffic.</li>
+<li>900,000 users trying to grab 240,000 tickets at the same time. I don't have any internal information about the system design. But if 20,000 users are allowed in. Since the number of tickets &gt;&gt; number of users, that means these 20,000 users are supposed to have 100% chance to book their tickets. In reality it is not the case. Users book their slots which are at a specific date and specific time period. That means there is a real chance that X% of users may choose the same time slot, and if it is more than the available slots for that time then you will encounter the error. Weekends and holidays are often booked first, which makes the it makes it more likely for an overlapping booking.</li>
+<li>There is also a question of how to manage the virtual queue. Let us assume that N users gain access to the system every minute. A user who is already in needs to complete the process before any new users enter. The slower one takes, the more competition one faces.</li>
+</ul>
+<p><img alt="A design flaw in TTD booking system exposed by youtuber" src="/images/ttd-hack.gif"></p>
+<ul>
+<li>I found a <a href="https://www.youtube.com/watch?v=Zs8fmMOxiWA">YouTube video</a> which revealed a design flaw. Apparently the waiting time for virtual queue can be changed by refreshing the page. The system seems to be assigning wait times either randomly or based on variables which are highly volatile.</li>
+<li>With the above context, entering 4 fields of data per person manually before being able to confirm the booking causes a significant obstacle for users trying to book higher number of tickets at a time.</li>
+</ul>
+<h2>How would I improve this</h2>
+<p>The goal of this exercise is to minimise the number of errors faced by users. Specifically the errors that stop them from completing their booking. I want to make the system more fair and transparent. Right now it favors someone who is very computer savvy or someone who knows about the loopholes in this system.</p>
+<h3>Small tweaks: A technical solution.</h3>
+<ul>
+<li>As described above, the process of entering pilgrim data manually slows the users down. Since this step comes after choosing the time slot, the chosen slots may be filled in the interim. If we tweak the system so that the data needs to be entered before choosing the time slot then it would give users more accurate picture of available places.</li>
+<li>Similarly letting the users to save information ahead of time and selecting them during booking process can also improve the experience.</li>
+<li>When users face the “the slot was just booked by another pilgrim” error, they can be given an option to choose an alternative time slot. They need not re-enter the queue for a chance to book a slot.</li>
+<li>Lastly, I would monitor the number of errors caused by 2 or more users trying to book the same time slot. This will not only give us the current state of the system but will also become the metric to measure the success of any future changes.</li>
+</ul>
+<h3>Thinking from first principles: A system design solution.</h3>
+<ul>
+<li>What if we want to rethink how the system is supposed to work. An online booking system that is designed as first-come-first-serve is probably not a fully fair system. An online booking system that is designed as first-come-first-serve, but doesn’t fully guarantee tickets on first-come basis is definitely not a fair or transparent system.</li>
+<li>For inspiration, I turned to sports. Wimbeldon, Lords Cricket Ground and Old Trafford Football stadium, all sell a portion of their tickets on a ballot process. Every year people are invited to apply for the ballot informing which days/matches they want to attend. Once the ballot closes, tickets are assigned randomly. Payment is processed for those who are assigned tickets.</li>
+<li>We can adopt this system for TTD online booking. Although we will need to tweak a couple of things. Due to <a href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=11668">Reserve Bank of India’s directive on automatic payments</a>, charging user’s cards when they are successfully assigned tickets might not be possible. Instead users may be sent emails/texts to inform about their tickets and asked to complete the payment within 72 hours. If a payment is not received, the tickets can be released back to the available pool.</li>
+<li>Some constraints may also be placed on the number of bookings requested by users. Users who haven't recently visited can be given higher priority.</li>
+</ul>
+<h2>Takeaways</h2>
+<ul>
+<li>The Tirumala Tirupati Devasthanam (TTD) online booking system for the most visited Hindu Temple, Tirumala, is a complex booking system designed to handle peak time traffic.</li>
+<li>The system has challenges related to scalability, performance, and data integrity, and is designed to distribute traffic across servers, optimize database operations, minimize latency, and handle potential security threats.</li>
+<li>The virtual queue is the big design decision that TTD made to handle peak time traffic. However, there are design flaws in the system that need to be addressed to make it more fair and transparent.</li>
+<li>There can be several approaches to overcome the challenges faced by the system. I have only discussed a few. It is always helpful to reframe the problem we are trying to solve in a way we are offering the simplest and most effective solution.</li>
+</ul>
+<p>Thanks for reading. If you liked this blog post, you can follow me on <a href="https://www.linkedin.com/in/srikanthvemaraju/">LinkedIn</a> for more.</p>                </article>
             </aside><!-- /#featured -->
                 <section id="content" class="body">
                     <h1>Other articles</h1>
@@ -59,22 +115,25 @@
 
             <li><article class="hentry">
                 <header>
+                    <h1><a href="/messy-code.html" rel="bookmark"
+                           title="Permalink to Start by writing messy code">Start by writing messy code</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>The conventional wisdom in software engineering advocates for breaking down code into loosely coupled functions, classes, and modules, among other things. Numerous books and blog posts discuss various approaches that help us achieve the best possible design for our code.</p>
+<p>Sometimes, we may get lucky and find a design pattern …</p>
+                <a class="readmore" href="/messy-code.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
                     <h1><a href="/maintainer-mindset.html" rel="bookmark"
                            title="Permalink to How I developed a maintainer mindset?">How I developed a maintainer mindset?</a></h1>
                 </header>
 
                 <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-07-26T20:00:00+01:00">
-                Published: Wed 26 July 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-<p>tags: <a href="/tag/career.html">career</a> </p>
-</footer><!-- /.post-info -->                <p>Lurking on the internet forums related to software engineering, you will often find people asking questions like:</p>
+                <p>Lurking on the internet forums related to software engineering, you will often find people asking questions like:</p>
 <ul>
 <li>Is getting accepting a support role bad for your career?</li>
 <li>How do I get out of a support job?</li>
@@ -92,17 +151,7 @@
                 </header>
 
                 <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-07-22T20:00:00+01:00">
-                Published: Sat 22 July 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-<p>tags: <a href="/tag/backend-engineering.html">backend engineering</a> <a href="/tag/beginners.html">beginners</a> </p>
-</footer><!-- /.post-info -->                <p>What the hell is a deployment? That's what my wife asked me when she came across this word on her beginner's IT course. </p>
+                <p>What the hell is a deployment? That's what my wife asked me when she came across this word on her beginner's IT course. </p>
 <p>I was honestly stumped. </p>
 <p>Sofware development is full of jargon. As I have spent years working in this field I have developed a habit of collecting the …</p>
                 <a class="readmore" href="/what-is-deployment.html">read more</a>
@@ -116,17 +165,7 @@
                 </header>
 
                 <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-07-04T20:00:00+01:00">
-                Published: Tue 04 July 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/databases.html">databases</a>.</p>
-<p>tags: <a href="/tag/backend-engineering.html">backend engineering</a> <a href="/tag/database.html">database</a> <a href="/tag/orm.html">orm</a> </p>
-</footer><!-- /.post-info -->                <p>I hear strong opinions among developers for both ways of working with relational database.</p>
+                <p>I hear strong opinions among developers for both ways of working with relational database.</p>
 <p>Common reasons in favour of raw SQL:</p>
 <ul>
 <li>
@@ -145,17 +184,7 @@
                 </header>
 
                 <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-06-19T20:00:00+01:00">
-                Published: Mon 19 June 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/user-experience.html">user-experience</a>.</p>
-<p>tags: <a href="/tag/backend-engineering.html">backend engineering</a> <a href="/tag/database.html">database</a> </p>
-</footer><!-- /.post-info -->                <p>As a backend developer, it's easy to get lost behind multiple layers of the modern tech stack and focus solely on reading and writing data through the plumbing of software systems. However, it's important to recognize the impact we can have in contributing positively to the user experience. Our goal …</p>
+                <p>As a backend developer, it's easy to get lost behind multiple layers of the modern tech stack and focus solely on reading and writing data through the plumbing of software systems. However, it's important to recognize the impact we can have in contributing positively to the user experience. Our goal …</p>
                 <a class="readmore" href="/backend-user-experience.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
@@ -167,17 +196,7 @@
                 </header>
 
                 <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-05-30T20:00:00+01:00">
-                Published: Tue 30 May 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/databases.html">databases</a>.</p>
-
-</footer><!-- /.post-info -->                <p>There's something I have managed to crystallise for myself. As a Backend Engineer, I deal with designing relational database models often. Modelling the database is a crucial step in getting the API right in any modern application.</p>
+                <p>There's something I have managed to crystallise for myself. As a Backend Engineer, I deal with designing relational database models often. Modelling the database is a crucial step in getting the API right in any modern application.</p>
 <p>There is a delicate trade-off between normalisation and denormalisation while modelling a relational …</p>
                 <a class="readmore" href="/norm-vs-denorm.html">read more</a>
                 </div><!-- /.entry-content -->
@@ -186,21 +205,11 @@
             <li><article class="hentry">
                 <header>
                     <h1><a href="/5-simple-recursion-programs-in-python.html" rel="bookmark"
-                           title="Permalink to "5 Simple Recursion Programs in Python."">"5 Simple Recursion Programs in Python."</a></h1>
+                           title="Permalink to 5 Simple Recursion Programs in Python.">5 Simple Recursion Programs in Python.</a></h1>
                 </header>
 
                 <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2020-09-05T20:00:01+05:30">
-                Published: Sat 05 September 2020
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/python.html">python</a>.</p>
-<p>tags: <a href="/tag/django.html">django</a> <a href="/tag/orm.html">orm</a> </p>
-</footer><!-- /.post-info -->                <p>Here are 5 simple Python recursive functions that will get you started with the practicing recursion.</p>
+                <p>Here are 5 simple Python recursive functions that will get you started with the practicing recursion.</p>
 <p>These are exercise problems taken from the book - <em>Data Structures and Algorithms in Python Michael H. Goldwasser, Michael T. Goodrich, and Roberto Tamassia</em></p>
 <h3>Write a short recursive Python function that finds the minimum and …</h3>
                 <a class="readmore" href="/5-simple-recursion-programs-in-python.html">read more</a>
@@ -210,21 +219,11 @@
             <li><article class="hentry">
                 <header>
                     <h1><a href="/learn-by-building-a-data-pipeline-part-0.html" rel="bookmark"
-                           title="Permalink to "Learn By Building A Data Pipeline – Part 0"">"Learn By Building A Data Pipeline –  Part 0"</a></h1>
+                           title="Permalink to Learn By Building A Data Pipeline – Part 0">Learn By Building A Data Pipeline –  Part 0</a></h1>
                 </header>
 
                 <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2020-03-28T12:00:01+05:30">
-                Published: Sat 28 March 2020
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
-</footer><!-- /.post-info -->                <p>I just wanted to build something where I will be forced to explore and learn new things. I didn’t really know where to start so I started going back to one thing I have always thought had the potential to build interesting things. Reddit’s PRAW library, which is …</p>
+                <p>I just wanted to build something where I will be forced to explore and learn new things. I didn’t really know where to start so I started going back to one thing I have always thought had the potential to build interesting things. Reddit’s PRAW library, which is …</p>
                 <a class="readmore" href="/learn-by-building-a-data-pipeline-part-0.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
@@ -236,41 +235,8 @@
                 </header>
 
                 <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-10-01T12:00:01+05:30">
-                Published: Mon 01 October 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/software-engineering.html">software-engineering</a> </p>
-</footer><!-- /.post-info -->                <p>I wanted to write a blog post about something I learned this week. We use a standard set of open source packages in our projects. Almost all of them are pretty stable and cause no problems, but on some rare occasions, rarer than in the case of code I write …</p>
+                <p>I wanted to write a blog post about something I learned this week. We use a standard set of open source packages in our projects. Almost all of them are pretty stable and cause no problems, but on some rare occasions, rarer than in the case of code I write …</p>
                 <a class="readmore" href="/managing-python-dependencies-robustly.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/richard-hamming-you-and-your-research.html" rel="bookmark"
-                           title="Permalink to "Richard Hamming, You and Your Research"">"Richard Hamming, You and Your Research"</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-04-02T22:00:01+05:30">
-                Published: Mon 02 April 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/srikanth.html">Srikanth</a>
-        </address>
-<p>In <a href="/category/software-engineering.html">software-engineering</a>.</p>
-
-</footer><!-- /.post-info -->                <p>This is one of those things when I first saw, I asked myself why couldn't I have watched this earlier. I really can't tell if it would have made any difference had I watched this lecture 10 years ago, but I cannot stop myself from wondering about it. </p>
-<p>Richard Hamming …</p>
-                <a class="readmore" href="/richard-hamming-you-and-your-research.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->

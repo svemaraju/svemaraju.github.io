@@ -4,30 +4,26 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
-        <title>"Managing Python Dependencies Robustly."</title>
+        <title>Srikanth Vemaraju - Thoughts on Software Design</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
-        <meta name="description" content="I wanted to write a blog post about something I learned this week. We use a standard set of open source packages in our projects. Almost all of..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
                 <h1><a href="/">Srikanth Vemaraju</a></h1>
                 <nav><ul>
+                    <li><a href="/category/books-podcasts-or-videos.html">Books, Podcasts or Videos</a></li>
                     <li><a href="/category/databases.html">Databases</a></li>
-                    <li class="active"><a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a></li>
+                    <li><a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a></li>
                     <li><a href="/category/python.html">Python</a></li>
-                    <li><a href="/category/reading.html">Reading</a></li>
+                    <li><a href="/category/thoughts-on-software-design.html">Thoughts on Software Design</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="/managing-python-dependencies-robustly.html" rel="bookmark"
-           title="Permalink to "Managing Python Dependencies Robustly."">"Managing Python Dependencies Robustly."</a></h1>
-    </header>
-    <div class="entry-content">
-      <p>I wanted to write a blog post about something I learned this week. We use a standard set of open source packages in our projects. Almost all of them are pretty stable and cause no problems, but on some rare occasions, rarer than in the case of code I write, there’s a bug or two that gets pushed into PyPi. Or it may not even be a bug, like a newer version that stops supporting Python 2. </p>
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/managing-python-dependencies-robustly.html">"Managing Python Dependencies Robustly."</a></h1>
+                    <p>I wanted to write a blog post about something I learned this week. We use a standard set of open source packages in our projects. Almost all of them are pretty stable and cause no problems, but on some rare occasions, rarer than in the case of code I write, there’s a bug or two that gets pushed into PyPi. Or it may not even be a bug, like a newer version that stops supporting Python 2. </p>
 <p>So in this particular instance, our project was using the django-scarface package, that helps us sending those SNS messages pretty easily. The mistake we did, was not pinning down the version in the requirements.txt file. </p>
 <div class="highlight"><pre><span></span><code>. . 
 django-scarface
@@ -46,15 +42,26 @@ django-scarface
 <p>So all we need to do is specify the stable versions of all the packages we use as dependencies and this problem will never occur. And you will never have to bother about ever again. Right? Not really. </p>
 <p>These awesome OSS packages that we use to make our lives simple, can also make the same sort of mistakes that we do. They too can overlook the need to pin down their dependencies, and in that case you will run into the same problem as above or something even worse. An example of this is when Kombu, a messaging library used by Celery, released their 4.2 version that broke Celery. Celery which was careful in not leaving out a version range for Kombu in their <code>requirements.txt</code>, still had to face the issue as their <code>requirements.txt</code> read something like <code>kombu&gt;=4.0.2,&lt;5.0</code>. </p>
 <p>How do we detect breakages like these? A CI/CD pipeline that builds and runs tests can help us in detecting PIP installation errors in some cases. The catch here is that we CI/CD pipelines get triggered only when new code is pushed. Also in the case of Celery the installation did not raise any errors, it was only when Celery service was trying to boot up it threw an error. Having an error logging service like Sentry can help in these cases. Monitoring services that run detailed health checks like executing a critical part of the system and ensuring everything works as expected, is another way to deal with this. These practices are well recommended to handle production outages/errors in general, and they'll also work for our case.</p>
-<p>That's it! That's all I have to say. The younger more naive python programmer would have trouble paying attention to such detail. But I’m a lot wiser now. I have witnessed some really ugly stack traces in Sentry. Stack traces can be helpful in debugging, but they also can be revealing of how horrible results can some of the seeming harmless bugs can lead to. And they will force you to correct your shit. 😂</p>
-    <div>
-    <abbr class="published" title="2018-10-01T12:00:01+05:30">
-              Published: Mon 01 October 2018
-    </abbr> <p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
+<p>That's it! That's all I have to say. The younger more naive python programmer would have trouble paying attention to such detail. But I’m a lot wiser now. I have witnessed some really ugly stack traces in Sentry. Stack traces can be helpful in debugging, but they also can be revealing of how horrible results can some of the seeming harmless bugs can lead to. And they will force you to correct your shit. 😂</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
 
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/observations-on-api-design.html" rel="bookmark"
+                           title="Permalink to "Observations on API Design."">"Observations on API Design."</a></h1>
+                </header>
 
-  </article>
-</section>
+                <div class="entry-content">
+                <p>There are a lot of resources regarding designing good APIs. I personally found <a href="https://www.youtube.com/watch?v=aAb7hSCtvGw">the talk from Joshua Bloch</a> to be highly informative.  I can also add Martin Fowler's articles and talks, along the with highly recommended book "Design Patterns" by Erich Gamma et al., as good sources to refer when …</p>
+                <a class="readmore" href="/observations-on-api-design.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
         </section><!-- /#extras -->
 
