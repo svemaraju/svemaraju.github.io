@@ -23,31 +23,38 @@
                 <article>
                     <h1 class="entry-title"><a href="/how-do-millions-of-people-book-meetings-with-god.html">How do millions of people book meetings with God?</a></h1>
                     <p>Have you ever experienced the rush of online shopping? I bet you felt an adrenaline rush as you clicked through the website, competing with thousands or even millions of people at the same time.</p>
-<p>Top software companies are behind some of these websites. They are capable of serving millions of users simultaneously. In this blog post I write about an online booking system that you may not have heard about. It is the system powering the booking process of <a href="https://www.guinnessworldrecords.com/world-records/most-visited-hindu-temple-">the most visited Hindu Temple, Tirumala</a>. </p>
+<p>Top tech companies are behind some of these websites. They are capable of serving millions of users simultaneously. In this blog post I write about an online booking system that you may not have heard about. It is the system powering the booking process of <a href="https://www.guinnessworldrecords.com/world-records/most-visited-hindu-temple-">the most visited Hindu Temple in the world, Tirumala</a>. </p>
 <p><a href="https://www.tirumala.org/">Tirumala Tirupati Devasthanam</a> is the independent trust which manages the aforementioned popular temple in the state of Andhra Pradesh, India.</p>
-<p>My family visits this temple often. I have seen the evolution of the digital systems empowering the temple through the years. I was planning to visit the temple last year, first time after the pandemic, and was stuck by the new online booking experience. Initally I attributed the extreme scarcity of their entry tickets to rapid digitalisation India has seen in the past few years. Although that does play a part, what I have found by looking through a system design lens was a fascinating learning experience. </p>
+<p>My family visits this temple often. I saw the evolution of the digital systems empowering the temple through the years. I was planning to visit the temple last year, first time after the pandemic, and was stuck by the new online booking experience. It was near impossible to buy tickets. At first I attributed this to rapid digitalisation India has seen in the past few years. Although that does play a part, what I learned by analysing the website through a system design lens was fascinating. </p>
 <p>My intention is to share my analysis and if possible start a discussion around promoting user centric design in Indian public digital services. <strong>I do not intend to disparage the current developers of the TTD booking system. I am only exercising my curiousity in this topic.</strong></p>
-<p><img alt="daily attendance at Tirumala" src="/images/ttd_attendance.png"></p>
+<p><img alt="daily attendance at Tirumala" src="/images/ttd-attendance.png"></p>
 <p>In this blog post I write:</p>
 <ol>
-<li><strong>An overview of the TTD online booking system:</strong> Visualising the user journey through the booking process. </li>
+<li><strong>An overview of the TTD online booking system:</strong> Visualising the user journey through the booking process.</li>
 <li><strong>How does it fare in practice:</strong> Brief look at how the system performs in real world and common user complaints.</li>
 <li><strong>Hard challenges:</strong> What are the common challenges faced in designing highly scalable and concurrent systems?</li>
 <li><strong>Analysing the weakness:</strong> I attempt to explain the critical pain points of the system borne out of its design.</li>
 <li><strong>Ways to improve:</strong> I conclude by suggesting ways to enhance the user experience. I offer solutions which are both techincal and product design focussed.</li>
 </ol>
 <h2>How does the booking system work?</h2>
-<h3>The bookings become LIVE at a certain time.</h3>
+<h3>The bookings become LIVE at an announced time.</h3>
+<p><img alt="TTD announcing on twitter when tickets go live" src="/images/ttd-announcement.png"></p>
 <ul>
-<li>Bookings are open at a specific date and time. This information is published on the TTD website and their social media. They also run a TV and Youtube channel where the information is displayed in their ticker scroll.</li>
-<li>There are many types of services that can be booked and each of them are made available at different times. We will look at one type of service called Special Entry Darshan. "Darshan" is loosely translated to "a viewing" or more precisely it is an opportunity to be in the presence of a God (in a temple).</li>
-<li>The bookings for a following month are usually available in the last week of current month. However the actual dates are not fixed. In my experience, the bookings were made available for the following two months, instead of one, at the same time. That means we'll need to keep eyes and ears opened to learn about the opening times. I haven't used the app so I am not sure if they have any push notifications to notify announcements. 👀</li>
+<li>
+<p>Bookings for various services, including Special Entry Darshan, are open at specific dates and times. This information is communicated through the TTD website, social media, TV, and YouTube channels. </p>
+</li>
+<li>
+<p>Special Entry Darshan offers a chance for devotees to have a viewing or be in the presence of a God at a temple. These bookings are typically accessible in the last week of the current month for the following month, although the exact dates can vary. Sometimes, the bookings for the following two months are made available simultaneously. </p>
+</li>
+<li>
+<p>It's important to stay attentive to updates regarding opening times. It's uncertain whether the TTD app provides push notifications for such announcements.</p>
+</li>
 </ul>
 <p><img alt="journey of a booking at TTD website" src="/images/system-overview.png"></p>
 <h3>You must be prepared to grab your slot.</h3>
 <ul>
 <li>People are required to be registered on the website with their email and phone number. One can login to the website using phone number and a one-time password sent via SMS.</li>
-<li>Let's say the bookings are going live at 10AM on Friday. We need to be logged-in on the app or website as close to 10AM as possible. We would get auto logged out in 10-15 minutes so timing is important. 🕰</li>
+<li>Let's say the bookings are going live at 10AM on Friday. We need to be logged-in on the app or website as close to 10AM as possible. We would get auto logged out in a short interval so timing is important. 🕰</li>
 </ul>
 <h3>It's time for some speedy mouse clicks!</h3>
 <ul>
@@ -65,24 +72,33 @@
 <h2>What are the challenges here?</h2>
 <ul>
 <li>We know that building software that attracts traffic in millions is hard. It requires real technical skills to ensure the system can handle the peak time traffic.</li>
-<li>Let's see what are the technical challenges in some detail. The obvious is to just being able to serve the peak time traffic. I am not aware of the internals but I can guess that there is a load balancer sitting in front of multiple servers or containers to manage load. Since the bookings go LIVE at a certain time, preemptively increasing the server capacity is good way to deal with this situation.</li>
+<li>Let's see what are the technical challenges in some detail. The obvious one is to just being able to serve the peak time traffic. I am not aware of the internals but I can guess that there is a load balancer sitting in front of multiple servers or containers to manage load. Since the bookings go LIVE at a certain time, preemptively increasing the server capacity is good way to deal with this situation.</li>
 <li>In one of the <a href="https://news.tirumala.org/good-response-to-ttd-online-booking-of-sed-ttd-additional-eo/">press releases</a>, TTD stated that after the launch of the new booking system they saw 2,40,000 tickets booked within an hour. Around 900,000 concurrent sessions were open at the peak time. And, a total of 10 million hits were recorded by the system on that day.</li>
-<li>Creating a booking system capable of serving 1 million simultaneous users and managing 240,000 available tickets involves navigating issues related to scalability, performance, and data integrity. The system must be designed to distribute traffic across servers, optimize database operations, minimize latency, and handle potential security threats. Ensuring efficient network utilization and maintaining responsiveness while handling such substantial user demand are key concerns.</li>
-<li>Preventing multiple users from booking the same ticket concurrently presents intricate challenges. These involve mitigating race conditions, maintaining atomicity throughout multi-step booking processes, and handling the intricacies of reservation periods. Implementing effective locks and concurrency control mechanisms to avoid data inconsistency, deadlocks, and redundant booking requests is essential. Striking the right balance between ensuring data integrity and providing a seamless user experience remains a complex task.</li>
-<li>But also this is product design challenge. Ultimately the goal of this system to facilitate problem-free booking. To overcome the technical challenges, there have been design decisions made here. The big one is the virtual queue. The intention is to hold people in queue so that the main system is not overwhelmed by load.</li>
+<li>Designing a booking system capable of serving ~1 million concurrent users, with 240,000 available tickets will lead to dealing issues like scalability, performance, and data integrity. </li>
+<li>Moreover, preventing multiple users from booking the same ticket concurrently presents intricate challenges. These involve mitigating race conditions, maintaining atomicity throughout multi-step booking processes, and handling the intricacies of reservation periods. </li>
+<li>Locking and concurrency control mechanism to avoid any data inconsistencies becomes crucial part of the architecture design. We would need a database with strong consistency and transaction support but also which is easily scalable. I can also imagine a scope for challenges like race conditions and redundant bookings.</li>
+<li>Striking the right balance between ensuring all the technical intricacies and providing a seamless user experience will be a complex task.</li>
+<li>This is also a product design challenge. Ultimately the goal of this system to facilitate problem-free booking. To overcome the technical challenges, there have been design decisions made here. The big one is the virtual queue. The intention is to hold people in queue so that the main system is not overwhelmed by load. But it brings a different set of challenges that we will see next.</li>
 </ul>
 <h2>What problems do I see in current design</h2>
 <p><img alt="Design flaw in the system" src="/images/virtual-queue-design-flaw.png"></p>
 <ul>
-<li>I think the biggest problem is users reaching 1 step before payment and being told that the ticket is already booked by someone. Why does that happen? When we select the online booking service we are first added to a virtual queue. The waiting time in the queue is proportional to the traffic.</li>
-<li>900,000 users trying to grab 240,000 tickets at the same time. I don't have any internal information about the system design. But if 20,000 users are allowed in. Since the number of tickets &gt;&gt; number of users, that means these 20,000 users are supposed to have 100% chance to book their tickets. In reality it is not the case. Users book their slots which are at a specific date and specific time period. That means there is a real chance that X% of users may choose the same time slot, and if it is more than the available slots for that time then you will encounter the error. Weekends and holidays are often booked first, which makes the it makes it more likely for an overlapping booking.</li>
-<li>There is also a question of how to manage the virtual queue. Let us assume that N users gain access to the system every minute. A user who is already in needs to complete the process before any new users enter. The slower one takes, the more competition one faces.</li>
+<li>I think the biggest problem is users reaching one step before payment and being told that the ticket is already booked by someone. Why does that happen? When we select the online booking service we are first added to a virtual queue. The waiting time in the queue is proportional to the traffic.</li>
+<li>Let us consider that 900,000 users trying to grab 240,000 tickets at the same time. I don't have any internal information about the system design. But let's say 20,000 users are allowed in at a given time. </li>
+<li>Since the number of tickets is much greater than number of users, that means these 20,000 users are supposed to have 100% chance to book their tickets. </li>
+<li>In reality it is not the case. Users are trying to book slots -- at a specific date and time period. There is a real chance that X% of users may choose the same time slot, and if they are more than the available slots then they will encounter an error. Weekends and holidays are often booked first, which makes it more likely for an overlapping booking.</li>
+<li>
+<p>There is also a question of how to manage the virtual queue. Let us assume that N users gain access to the system every minute. A user, who is already in, needs to complete the process before any new users enter. The slower one takes, the more competition one faces.</p>
+</li>
+<li>
+<p>I found a <a href="https://www.youtube.com/watch?v=Zs8fmMOxiWA">YouTube video</a> which revealed a design flaw. Apparently the waiting time for virtual queue can be changed by refreshing the page. The system seems to be assigning wait times either randomly or based on variables which are highly volatile.</p>
+</li>
 </ul>
 <p><img alt="A design flaw in TTD booking system exposed by youtuber" src="/images/ttd-hack.gif"></p>
 <ul>
-<li>I found a <a href="https://www.youtube.com/watch?v=Zs8fmMOxiWA">YouTube video</a> which revealed a design flaw. Apparently the waiting time for virtual queue can be changed by refreshing the page. The system seems to be assigning wait times either randomly or based on variables which are highly volatile.</li>
-<li>With the above context, entering 4 fields of data per person manually before being able to confirm the booking causes a significant obstacle for users trying to book higher number of tickets at a time.</li>
+<li>With the above context, entering 4 fields of data per person manually before being able to confirm the booking causes a significant obstacle for users trying to book higher number of tickets at a time. This probably why many people have had bad experience with booking.</li>
 </ul>
+<p><img alt="What are people saying about their booking experience on TTD website." src="/images/ttd-user-feedback.png"></p>
 <h2>How would I improve this</h2>
 <p>The goal of this exercise is to minimise the number of errors faced by users. Specifically the errors that stop them from completing their booking. I want to make the system more fair and transparent. Right now it favors someone who is very computer savvy or someone who knows about the loopholes in this system.</p>
 <h3>Small tweaks: A technical solution.</h3>
@@ -90,21 +106,23 @@
 <li>As described above, the process of entering pilgrim data manually slows the users down. Since this step comes after choosing the time slot, the chosen slots may be filled in the interim. If we tweak the system so that the data needs to be entered before choosing the time slot then it would give users more accurate picture of available places.</li>
 <li>Similarly letting the users to save information ahead of time and selecting them during booking process can also improve the experience.</li>
 <li>When users face the “the slot was just booked by another pilgrim” error, they can be given an option to choose an alternative time slot. They need not re-enter the queue for a chance to book a slot.</li>
+<li>In order to make the system more transparent, a status message can be displayed to the users. This can indicate approximately how many users are online and how many tickets are available.</li>
 <li>Lastly, I would monitor the number of errors caused by 2 or more users trying to book the same time slot. This will not only give us the current state of the system but will also become the metric to measure the success of any future changes.</li>
 </ul>
 <h3>Thinking from first principles: A system design solution.</h3>
 <ul>
-<li>What if we want to rethink how the system is supposed to work. An online booking system that is designed as first-come-first-serve is probably not a fully fair system. An online booking system that is designed as first-come-first-serve, but doesn’t fully guarantee tickets on first-come basis is definitely not a fair or transparent system.</li>
-<li>For inspiration, I turned to sports. Wimbeldon, Lords Cricket Ground and Old Trafford Football stadium, all sell a portion of their tickets on a ballot process. Every year people are invited to apply for the ballot informing which days/matches they want to attend. Once the ballot closes, tickets are assigned randomly. Payment is processed for those who are assigned tickets.</li>
+<li>What if we want to rethink how the system is supposed to work. An online booking system that is designed as first-come-first-serve is probably not a fully fair system. An online booking system that is designed as first-come-first-serve, but doesn’t guarantee tickets on first-come basis is definitely not a fair or transparent system.</li>
+<li>For inspiration, I turned to sports. Wimbeldon, Lords Cricket Ground and Old Trafford Football stadium, all sell a portion of their tickets through a ballot process. Every year people are invited to apply for the ballot informing which days/matches they want to attend. Once the ballot closes, tickets are assigned randomly. Payment is processed only for those who are successfully assigned tickets.</li>
 <li>We can adopt this system for TTD online booking. Although we will need to tweak a couple of things. Due to <a href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=11668">Reserve Bank of India’s directive on automatic payments</a>, charging user’s cards when they are successfully assigned tickets might not be possible. Instead users may be sent emails/texts to inform about their tickets and asked to complete the payment within 72 hours. If a payment is not received, the tickets can be released back to the available pool.</li>
 <li>Some constraints may also be placed on the number of bookings requested by users. Users who haven't recently visited can be given higher priority.</li>
+<li>This approach not only gives everyone an equal chance but also reduces the burden on the system. A ballot can stay open for many days, hence there is no need for a traffic spike to occur.</li>
 </ul>
 <h2>Takeaways</h2>
 <ul>
 <li>The Tirumala Tirupati Devasthanam (TTD) online booking system for the most visited Hindu Temple, Tirumala, is a complex booking system designed to handle peak time traffic.</li>
 <li>The system has challenges related to scalability, performance, and data integrity, and is designed to distribute traffic across servers, optimize database operations, minimize latency, and handle potential security threats.</li>
 <li>The virtual queue is the big design decision that TTD made to handle peak time traffic. However, there are design flaws in the system that need to be addressed to make it more fair and transparent.</li>
-<li>There can be several approaches to overcome the challenges faced by the system. I have only discussed a few. It is always helpful to reframe the problem we are trying to solve in a way we are offering the simplest and most effective solution.</li>
+<li>There can be several approaches to overcome the challenges faced by the system. I have only discussed a few. It is always helpful to reframe the problem. This allows us to come up with solutions that are simplest and most effective.</li>
 </ul>
 <p>Thanks for reading. If you liked this blog post, you can follow me on <a href="https://www.linkedin.com/in/srikanthvemaraju/">LinkedIn</a> for more.</p>                </article>
             </aside><!-- /#featured -->
