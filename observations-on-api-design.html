@@ -26,6 +26,7 @@
         <a href="/observations-on-api-design.html" rel="bookmark"
            title="Permalink to "Observations on API Design."">"Observations on API Design."</a></h1>
     </header>
+
     <div class="entry-content">
       <p>There are a lot of resources regarding designing good APIs. I personally found <a href="https://www.youtube.com/watch?v=aAb7hSCtvGw">the talk from Joshua Bloch</a> to be highly informative.  I can also add Martin Fowler's articles and talks, along the with highly recommended book "Design Patterns" by Erich Gamma et al., as good sources to refer when it comes to designing software applications. In this blog post, I will try to distill their wisdom and mix it with my experience. My work has been mainly building web services, and I am going to use API as a placeholder for HTTP API in the context of this blog, but it can also be applicable to any kind of API.</p>
 <p>I am going to borrow some of the key points from Jasmin Blanchette's <a href="https://issuu.com/madman1969/docs/the_little_manual_of_api_design">The Little Manual of API Desing</a> about how to approach designing APIs.</p>
@@ -93,13 +94,13 @@ Another use of having code separation is it enables the code to be DRY, i.e. if 
 <p><code>if</code> or <code>switch</code> statements are inevitable when it comes to implementing business rules. <em>If</em> your business rules are too complex, you might end up with something looking like this -</p>
 <div class="highlight"><pre><span></span><code>...
 
-<span class="k">if</span><span class="w"> </span><span class="nv">payment</span>.<span class="nv">customer</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">discounted_customers</span>:
-<span class="w">    </span>#<span class="w"> </span><span class="nv">custom</span><span class="w"> </span><span class="nv">flow</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">premium</span><span class="w"> </span><span class="nv">customers</span>
+if payment.customer in discounted_customers:
+    # custom flow for premium customers
 
-<span class="k">if</span><span class="w"> </span><span class="nv">payment</span>.<span class="nv">get_pending_amount</span><span class="ss">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>:
-<span class="w">    </span>#<span class="w"> </span><span class="nv">flow</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">handling</span><span class="w"> </span><span class="nv">pending</span><span class="w"> </span><span class="nv">payments</span>
-<span class="k">else</span>:
-<span class="w">    </span>#<span class="w"> </span><span class="nv">usual</span><span class="w"> </span><span class="nv">flow</span><span class="w"> </span>
+if payment.get_pending_amount() &gt; 0:
+    # flow for handling pending payments
+else:
+    # usual flow 
 
 ...
 </code></pre></div>
@@ -145,23 +146,46 @@ It is advised not to overgeneralize the API use cases. Bloch uses libraries as a
 <p>There’s no secret to writing tests .. there are only secrets to writing testable code. - Misko Hevery of Google</p>
 </blockquote>
 <p>Writing testable code is an art. But thankfully writing testable code overlaps with designing good APIs/software. </p>
-    <div>
-    <abbr class="published" title="2018-03-22T20:00:01+05:30">
-              Published: Thu 22 March 2018
-    </abbr> <p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
+<footer class="post-info">
+        <abbr class="published" title="2018-03-22T20:00:01+05:30">
+                Published: Thu 22 March 2018
+        </abbr>
 
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/sri.html">Sri</a>
+        </address>
+<p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
+<p>tags: <a href="/tag/api-design.html">api-design</a> <a href="/tag/python.html">python</a> <a href="/tag/design-of-everyday-software.html">Design Of Everyday Software</a> </p>
+</footer><!-- /.post-info -->    </div><!-- /.entry-content -->
 
   </article>
 </section>
         <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
         </section><!-- /#extras -->
 
         <footer id="contentinfo" class="body">
                 <address id="about" class="vcard body">
-                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                Proudly powered by <a rel="nofollow" href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a rel="nofollow" href="https://www.python.org/">Python</a>.
                 </address><!-- /#about -->
 
-                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                <p>The theme is by <a rel="nofollow" href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
 </body>

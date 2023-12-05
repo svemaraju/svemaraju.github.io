@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
-        <title>Srikanth Vemaraju - Design Of Everyday Software</title>
+        <title>How Django keeps track of your model classes?</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
@@ -18,21 +18,16 @@
                     <li><a href="/category/reading.html">Reading</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/django-model-detection.html" rel="bookmark"
+           title="Permalink to How Django keeps track of your model classes?">How Django keeps track of your model classes?</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="/django-model-detection.html">How Django keeps track of your model classes?</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2023-12-05T20:00:00+00:00">
-                Published: Tue 05 December 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/sri.html">Sri</a>
-        </address>
-<p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
-
-</footer><!-- /.post-info --><p>I have ran the <code>python manage.py makemigrations</code> command several hundreds of times. Recently I had a surge of curiousity to find out how does django detect changes and generate migration files for an app.</p>
+    <div class="entry-content">
+      <p>I have ran the <code>python manage.py makemigrations</code> command several hundreds of times. Recently I had a surge of curiousity to find out how does django detect changes and generate migration files for an app.</p>
 <p>I needed many answers but one of the first question I had was "How does Django keep track of my model classes?"</p>
 <p>In Django, the creation of model classes is fundamental to mapping your application's data model to a database. These model classes inherit from Django's <code>models.Model</code> base class, which provides them with essential database interaction capabilities.</p>
 <p>Under the hood, Django employs metaclasses to achieve its model detection magic. </p>
@@ -135,23 +130,10 @@
                 <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">apps</span><span class="o">.</span><span class="n">get_app_config</span><span class="p">(</span><span class="n">app_label</span><span class="p">)</span><span class="o">.</span><span class="n">get_models</span><span class="p">()</span>
             <span class="p">):</span>
             <span class="o">...</span>
-</code></pre></div>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/ttd-online-booking.html" rel="bookmark"
-                           title="Permalink to How do millions of people book meetings with God?">How do millions of people book meetings with God?</a></h1>
-                </header>
-
-                <div class="entry-content">
+</code></pre></div>
 <footer class="post-info">
-        <abbr class="published" title="2023-08-16T20:00:00+01:00">
-                Published: Wed 16 August 2023
+        <abbr class="published" title="2023-12-05T20:00:00+00:00">
+                Published: Tue 05 December 2023
         </abbr>
 
         <address class="vcard author">
@@ -159,220 +141,10 @@
         </address>
 <p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
 
-</footer><!-- /.post-info -->                <p>Building software applications that handle millions of concurrent users is hard. Designing such applications need both technical skill and some creative product design. In this blog, I review Tirumala Tirupathi Devasthanam's (TTD) online booking system for the devotees. I explain the challenges behind such system and try suggest a better way to design a booking system that needs to serve millions of users.</p>
-                <a class="readmore" href="/ttd-online-booking.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
+</footer><!-- /.post-info -->    </div><!-- /.entry-content -->
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/messy-code.html" rel="bookmark"
-                           title="Permalink to Start by writing messy code">Start by writing messy code</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-07-31T20:00:00+01:00">
-                Published: Mon 31 July 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/sri.html">Sri</a>
-        </address>
-<p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/design.html">design</a> </p>
-</footer><!-- /.post-info -->                <p>The conventional wisdom in software engineering advocates for breaking down code into loosely coupled functions, classes, and modules, among other things. Numerous books and blog posts discuss various approaches that help us achieve the best possible design for our code.</p>
-<p>Sometimes, we may get lucky and find a design pattern …</p>
-                <a class="readmore" href="/messy-code.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/maintainer-mindset.html" rel="bookmark"
-                           title="Permalink to How I developed a maintainer mindset?">How I developed a maintainer mindset?</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-07-26T20:00:00+01:00">
-                Published: Wed 26 July 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/sri.html">Sri</a>
-        </address>
-<p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
-<p>tags: <a href="/tag/career.html">career</a> </p>
-</footer><!-- /.post-info -->                <p>Lurking on the internet forums related to software engineering, you will often find people asking questions like:</p>
-<ul>
-<li>Is getting accepting a support role bad for your career?</li>
-<li>How do I get out of a support job?</li>
-<li>Is technical support experience valuable? </li>
-</ul>
-<p>I found myself asking these same questions some years …</p>
-                <a class="readmore" href="/maintainer-mindset.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/what-is-deployment.html" rel="bookmark"
-                           title="Permalink to Deploying software is like opening a bakery 🧁">Deploying software is like opening a bakery 🧁</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-07-22T20:00:00+01:00">
-                Published: Sat 22 July 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/sri.html">Sri</a>
-        </address>
-<p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
-<p>tags: <a href="/tag/backend-engineering.html">backend engineering</a> <a href="/tag/beginners.html">beginners</a> </p>
-</footer><!-- /.post-info -->                <p>What the hell is a deployment? That's what my wife asked me when she came across this word on her beginner's IT course. </p>
-<p>I was honestly stumped. </p>
-<p>Sofware development is full of jargon. As I have spent years working in this field I have developed a habit of collecting the …</p>
-                <a class="readmore" href="/what-is-deployment.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/backend-user-experience.html" rel="bookmark"
-                           title="Permalink to 🌟 How can a backend developer contribute to a seamless user experience? 🌟">🌟 How can a backend developer contribute to a seamless user experience? 🌟</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2023-06-19T20:00:00+01:00">
-                Published: Mon 19 June 2023
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/sri.html">Sri</a>
-        </address>
-<p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
-<p>tags: <a href="/tag/backend-engineering.html">backend engineering</a> <a href="/tag/database.html">database</a> </p>
-</footer><!-- /.post-info -->                <p>As a backend developer, it's easy to get lost behind multiple layers of the modern tech stack and focus solely on reading and writing data through the plumbing of software systems. However, it's important to recognize the impact we can have in contributing positively to the user experience. Our goal …</p>
-                <a class="readmore" href="/backend-user-experience.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/managing-python-dependencies-robustly.html" rel="bookmark"
-                           title="Permalink to "Managing Python Dependencies Robustly."">"Managing Python Dependencies Robustly."</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-10-01T12:00:01+05:30">
-                Published: Mon 01 October 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/sri.html">Sri</a>
-        </address>
-<p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/design-of-everyday-software.html">Design Of Everyday Software</a> </p>
-</footer><!-- /.post-info -->                <p>I wanted to write a blog post about something I learned this week. We use a standard set of open source packages in our projects. Almost all of them are pretty stable and cause no problems, but on some rare occasions, rarer than in the case of code I write …</p>
-                <a class="readmore" href="/managing-python-dependencies-robustly.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/observations-on-api-design.html" rel="bookmark"
-                           title="Permalink to "Observations on API Design."">"Observations on API Design."</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-03-22T20:00:01+05:30">
-                Published: Thu 22 March 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/sri.html">Sri</a>
-        </address>
-<p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
-<p>tags: <a href="/tag/api-design.html">api-design</a> <a href="/tag/python.html">python</a> <a href="/tag/design-of-everyday-software.html">Design Of Everyday Software</a> </p>
-</footer><!-- /.post-info -->                <p>There are a lot of resources regarding designing good APIs. I personally found <a href="https://www.youtube.com/watch?v=aAb7hSCtvGw">the talk from Joshua Bloch</a> to be highly informative.  I can also add Martin Fowler's articles and talks, along the with highly recommended book "Design Patterns" by Erich Gamma et al., as good sources to refer when …</p>
-                <a class="readmore" href="/observations-on-api-design.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/learning-to-work-on-existing-codebases.html" rel="bookmark"
-                           title="Permalink to "Learning to work on existing codebases."">"Learning to work on existing codebases."</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-02-07T20:00:01+05:30">
-                Published: Wed 07 February 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/sri.html">Sri</a>
-        </address>
-<p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
-
-</footer><!-- /.post-info -->                <p>Working with legacy code is probably the most common part of a developer’s job in the software industry. Unless you’re only going to work in super early phase startups or constantly get assigned to <a href="https://en.wikipedia.org/wiki/Greenfield_project">greenfield</a> projects, you <em>will</em> encounter legacy code. There are many articles written on the …</p>
-                <a class="readmore" href="/learning-to-work-on-existing-codebases.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/mistakes-and-learnings.html" rel="bookmark"
-                           title="Permalink to "Mistakes and Learnings."">"Mistakes and Learnings."</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2017-08-07T20:00:01+05:30">
-                Published: Mon 07 August 2017
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/sri.html">Sri</a>
-        </address>
-<p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
-
-</footer><!-- /.post-info -->                <p>It’s been over a year since I have started working at my current company. There have been lots of ups and downs. I know that’s a cliched thing to say, but it’s true. In this post, I have decided to really introspect over some of the mistakes …</p>
-                <a class="readmore" href="/mistakes-and-learnings.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/at-the-outset.html" rel="bookmark"
-                           title="Permalink to "At the outset.."">"At the outset.."</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2017-05-02T20:00:01+05:30">
-                Published: Tue 02 May 2017
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/sri.html">Sri</a>
-        </address>
-<p>In <a href="/category/design-of-everyday-software.html">Design Of Everyday Software</a>.</p>
-
-</footer><!-- /.post-info -->                <p>Like many, I too have been contemplating to start blogging. And here I am, after many false starts, finally starting to put words onto the internet. </p>
-<p>My intentions here are very simple. I just want to log my learnings and observations, as I begin to transition from being a novice …</p>
-                <a class="readmore" href="/at-the-outset.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>

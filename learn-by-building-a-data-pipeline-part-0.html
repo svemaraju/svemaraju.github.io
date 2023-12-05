@@ -26,6 +26,7 @@
         <a href="/learn-by-building-a-data-pipeline-part-0.html" rel="bookmark"
            title="Permalink to Learn By Building A Data Pipeline – Part 0">Learn By Building A Data Pipeline –  Part 0</a></h1>
     </header>
+
     <div class="entry-content">
       <p>I just wanted to build something where I will be forced to explore and learn new things. I didn’t really know where to start so I started going back to one thing I have always thought had the potential to build interesting things. Reddit’s PRAW library, which is the python wrapper for reddit api.</p>
 <h2>Motivation and Initial Idea.</h2>
@@ -35,9 +36,9 @@
 <p>The Producer produces a stream of data, continuously posting it to the Consumer which is continuously listening for data to come in. The Consumer will then try to perform some necessary processing and eventually store the data to the Datastore. This is pretty basic data pipeline that I have seen referenced in various books and blog posts.</p>
 <p>The PRAW library has a nifty feature to generate a stream of submissions or posts.</p>
 <p>Once we instantiate a <code>reddit</code> instance with necessary authentication information, we can access the stream as below.</p>
-<div class="highlight"><pre><span></span><code><span class="nv">all_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">reddit</span>.<span class="nv">subreddit</span><span class="ss">(</span><span class="s1">&#39;all&#39;</span><span class="ss">)</span>
-<span class="k">for</span><span class="w"> </span><span class="nv">post</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">all_</span>.<span class="nv">stream</span>.<span class="nv">submissions</span><span class="ss">()</span>:
-<span class="w">    </span><span class="nv">process</span><span class="ss">(</span><span class="nv">post</span><span class="ss">)</span>
+<div class="highlight"><pre><span></span><code>all_ = reddit.subreddit(&#39;all&#39;)
+for post in all_.stream.submissions():
+    process(post)
 </code></pre></div>
 
 <p>The <code>process</code> function here is a placeholder for any processing or extracting we’d like to do on the data. Each <code>post</code> contains information like creation time, url, title text, user who posted it and the subreddit it belongs to. In the spirit of approaching the task in small iterations I have decided to limit the data being extracted to the subreddit name. This will allow me to implement a counter that will track the number of posts being posted on reddit under each subreddit name. As one of the outputs to our task, we can hope to view some kind of tabular data showing subreddit names with respective number of posts. Of course, the number of posts here is merely the number of posts from the time we start listening on the stream and doesn't relate to overall number of posts in a lifetime. It was really helpful in visualising this before implementing any code, so as to have a clear goal in mind.</p>
@@ -116,10 +117,10 @@ services:
 </code></pre></div>
 
 <p>I realized I needed my Producer to wait until my Consumer is ready. So I added a bit of delay ahead of starting the stream.</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="nv">__name__</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;__main__&#39;</span>:
-<span class="w">    </span><span class="nv">time</span>.<span class="nv">sleep</span><span class="ss">(</span><span class="mi">20</span><span class="ss">)</span>
-<span class="w">    </span><span class="nv">print</span><span class="ss">(</span><span class="s2">&quot;---- Starting the reddit post stream ----&quot;</span><span class="ss">)</span>
-<span class="w">    </span><span class="nv">read</span><span class="ss">()</span>
+<div class="highlight"><pre><span></span><code>if __name__ == &#39;__main__&#39;:
+    time.sleep(20)
+    print(&quot;---- Starting the reddit post stream ----&quot;)
+    read()
 </code></pre></div>
 
 <h2>Seeing The Initial Result.</h2>
@@ -156,23 +157,46 @@ services:
 <p>I completed the very basic first step in my learning and understanding of real time data streaming systems. Although what I have built cannot be categorized as too trivial, it is far from being close complete and has a big scope for improvement. In the coming days and weeks I would like to explore various ways to enhance this data pipeline. </p>
 <p>Thanks for reading. Please feel free to give me any feedback.</p>
 <p>Cheers.</p>
-    <div>
-    <abbr class="published" title="2020-03-28T12:00:01+05:30">
-              Published: Sat 28 March 2020
-    </abbr> <p>In <a href="/category/python.html">Python</a>.</p>
+<footer class="post-info">
+        <abbr class="published" title="2020-03-28T12:00:01+05:30">
+                Published: Sat 28 March 2020
+        </abbr>
 
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/sri.html">Sri</a>
+        </address>
+<p>In <a href="/category/python.html">Python</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/design-of-everyday-software.html">Design Of Everyday Software</a> </p>
+</footer><!-- /.post-info -->    </div><!-- /.entry-content -->
 
   </article>
 </section>
         <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
         </section><!-- /#extras -->
 
         <footer id="contentinfo" class="body">
                 <address id="about" class="vcard body">
-                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                Proudly powered by <a rel="nofollow" href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a rel="nofollow" href="https://www.python.org/">Python</a>.
                 </address><!-- /#about -->
 
-                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                <p>The theme is by <a rel="nofollow" href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
 </body>
