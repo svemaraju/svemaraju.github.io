@@ -39,7 +39,8 @@
 <h3>But what exactly is a metaclass in Python?</h3>
 <p>Simply put, a metaclass allows you to customize class creation in Python. In case of Django's model system, the metaclass responsible for this process is called <code>ModelBase</code>.</p>
 <p>Within the <code>ModelBase</code> metaclass, a crucial method known as <code>__new__</code> plays a central role. This method invokes the <code>register_model</code> function, which, in turn, ensures that a given model registered within the app.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ModelBase</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># django/django/db/models/base.py</span>
+<span class="k">class</span> <span class="nc">ModelBase</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Metaclass for all models.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -53,7 +54,7 @@
 </code></pre></div>
 
 <h3>But when does this <strong>new</strong> method on ModelBase get triggered?</h3>
-<p>To my suprices I found out that it gets activated at import time. When you import a model class, Django's model detection process initiates. For example:</p>
+<p>To my surprise I found out that it gets triggered at import time. When you import a model class, <strong>new</strong> method is fired and Django's model detection process initiates. For example:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
 </code></pre></div>
 
