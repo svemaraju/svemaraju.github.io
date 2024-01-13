@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
-        <title>Discovering Python's string interning</title>
+        <title>String interning; discovering how python is saving my RAM.</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
         <meta name="description" content="Looking at code for answers: How I discovered Python's string interning" />
 </head>
@@ -24,7 +24,7 @@
     <header>
       <h1 class="entry-title">
         <a href="/python-string-interning.html" rel="bookmark"
-           title="Permalink to Discovering Python's string interning">Discovering Python's string interning</a></h1>
+           title="Permalink to String interning; discovering how python is saving my RAM.">String interning; discovering how python is saving my RAM.</a></h1>
     </header>
 
     <div class="entry-content">
@@ -35,6 +35,7 @@
 1. Context and observing the behaviour: I explain my motivation to understand parts of Python behaviour and the onset of my quest.
 2. Learning about the internals: I observed enough and was ready for some answers. I dig into python docs, continue observing and finally find out some truths.
 3. Where does this come to play: I make my conclusions while carrying on looking at more interesting angles of string interning.</p>
+<p><img alt="how python saves memory by string interning" src="/images/string-interning.png"></p>
 <h2>Context and observing the behaviour.</h2>
 <p>I was watching a video on programming basics as I was interested in how people explain these concepts to beginners. At one point there was a discussion on "pass by value" and "pass by reference". I have read about them in my undergraduate course. But I rarely think of them when I code in Python. </p>
 <p>Instead of watching a video on the topic, I began to write some code to observe how arguments are passed to a function in Python.</p>
@@ -228,9 +229,9 @@
 <p>So that's my adventure into CPython's string interning. Understanding how strings are interned at compile time, and the nuances of when and where this optimization comes into play, sheds light on the intricacies of Python's memory management. While string interning may not be evident in everyday code, its impact is profound in managing large codebases and optimizing the performance of Python programs. </p>
 <p>Further reading:</p>
 <ul>
-<li>http://guilload.com/python-string-interning/</li>
-<li>https://arpitbhayani.me/blogs/string-interning-python/</li>
-<li>https://devguide.python.org/internals/</li>
+<li><a href="http://guilload.com/python-string-interning/">The internals of Python string interning</a></li>
+<li><a href="https://arpitbhayani.me/blogs/string-interning-python/">How python optimises its runtime using string interning</a></li>
+<li><a href="https://devguide.python.org/internals/">CPython’s internals: official developer guide</a></li>
 </ul>
 <p>If you liked this article, you may like some of my previous articles:</p>
 <ul>
