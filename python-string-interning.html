@@ -227,6 +227,14 @@
 <p>This brings us to the question, where is it actually used? In managing (hundreds of) thousands of lines of code that every python program needs. Even a simple <code>print("hello world")</code> requires the several  functions and classes to be imported into the interpreter. Imagine a more complex program with a long list of third party dependencies. Names of functions, methods, classes and other variables are the perfect candidates for string interning.</p>
 <p>So that's my adventure into CPython's string interning. Understanding how strings are interned at compile time, and the nuances of when and where this optimization comes into play, sheds light on the intricacies of Python's memory management. While string interning may not be evident in everyday code, its impact is profound in managing large codebases and optimizing the performance of Python programs. </p>
 <p>If you liked this article, you may like some of my previous articles:</p>
+<ul>
+<li>
+<h2><a href="/django-model-detection.html">How Django keeps track of your model classes?</a></h2>
+</li>
+<li>
+<h2><a href="/ttd-online-booking.html">System Design Case Study: How do millions of people book meetings with God?</a></h2>
+</li>
+</ul>
 <footer class="post-info">
         <abbr class="published" title="2024-01-12T22:00:00+00:00">
                 Published: Fri 12 January 2024
