@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Run Tracker</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f0f;
+      --bg2: #1a1a1a;
+      --bg3: #242424;
+      --text: #f0ede8;
+      --text2: #9a9690;
+      --text3: #5a5754;
+      --green: #1D9E75;
+      --blue: #378ADD;
+      --red: #E24B4A;
+      --amber: #EF9F27;
+      --border: rgba(255,255,255,0.07);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    header {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    header h1 { font-size: 18px; font-weight: 500; letter-spacing: -0.02em; }
+
+    .pills { display: flex; gap: 6px; }
+
+    .pill {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; color: var(--text2);
+      background: var(--bg2); border: 0.5px solid var(--border);
+      border-radius: 999px; padding: 5px 10px; white-space: nowrap;
+    }
+
+    .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--text3); flex-shrink: 0;
+    }
+    .dot.green  { background: var(--green); animation: pulse 1.4s infinite; }
+    .dot.blue   { background: var(--blue);  animation: pulse 1.4s infinite; }
+    .dot.error  { background: var(--red); }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .main { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 12px; }
+
+    .timer-card {
+      background: var(--bg2); border: 0.5px solid var(--border);
+      border-radius: var(--radius); padding: 24px 20px 20px; text-align: center;
+    }
+    .timer-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .timer-value { font-size: 56px; font-weight: 300; letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+
+    .stat {
+      background: var(--bg2); border: 0.5px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px 16px;
+    }
+    .stat.full { grid-column: span 2; display: flex; align-items: center; justify-content: space-between; }
+    .stat-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
+    .stat-value { font-size: 26px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+    .stat-unit { font-size: 12px; color: var(--text3); margin-top: 3px; }
+    .stat.full .stat-label { margin-bottom: 0; }
+    .stat.full .stat-right { text-align: right; }
+    .stat.full .stat-value { font-size: 22px; }
+
+    .section-label {
+      font-size: 11px; color: var(--text3);
+      text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 2px 2px;
+    }
+
+    .motion-banner {
+      background: rgba(55,138,221,0.1); border: 0.5px solid rgba(55,138,221,0.3);
+      border-radius: var(--radius-sm); padding: 12px 14px;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .motion-banner p { font-size: 13px; color: #80b8f0; flex: 1; }
+    .motion-banner button {
+      background: var(--blue); color: #fff; border: none;
+      border-radius: 6px; padding: 7px 12px; font-size: 13px;
+      font-weight: 500; cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    }
+
+    .chart-card {
+      background: var(--bg2); border: 0.5px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px 16px;
+    }
+    .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .chart-title { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; }
+    #chart-max { font-size: 11px; color: var(--text3); }
+    #speed-canvas { width: 100%; height: 72px; display: block; }
+
+    #start-btn {
+      width: 100%; padding: 16px; font-size: 16px; font-weight: 500;
+      letter-spacing: -0.01em; border-radius: var(--radius); border: none;
+      cursor: pointer; transition: transform 0.12s, opacity 0.12s;
+    }
+    #start-btn:active { transform: scale(0.98); opacity: 0.85; }
+    #start-btn.idle    { background: var(--green); color: #fff; }
+    #start-btn.running { background: var(--red);   color: #fff; }
+    #start-btn.done    { background: var(--bg3); color: var(--text); border: 0.5px solid var(--border); }
+
+    .error-box {
+      background: rgba(226,75,74,0.1); border: 0.5px solid rgba(226,75,74,0.3);
+      border-radius: var(--radius-sm); padding: 12px 14px;
+      font-size: 13px; color: #f08080; display: none;
+    }
+
+    .log-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
+    .log-title { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+    .log-list { display: flex; flex-direction: column; max-height: 160px; overflow-y: auto; }
+    .log-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 0.5px solid var(--border); font-size: 12px; }
+    .log-row:last-child { border-bottom: none; }
+    .log-time { color: var(--text3); font-variant-numeric: tabular-nums; min-width: 36px; }
+    .log-msg  { color: var(--text2); flex: 1; padding: 0 8px; }
+    .log-val  { color: var(--green); font-variant-numeric: tabular-nums; font-weight: 500; min-width: 52px; text-align: right; }
+
+    .lock-note { font-size: 11px; color: var(--text3); text-align: center; padding-top: 4px; }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+  <h1>Run tracker</h1>
+  <div class="pills">
+    <div class="pill"><span class="dot" id="gps-dot"></span><span id="gps-label">GPS</span></div>
+    <div class="pill"><span class="dot" id="motion-dot"></span><span id="motion-label">Motion</span></div>
+  </div>
+</header>
+
+<div class="main">
+  <div class="error-box" id="err-box"></div>
+
+  <div class="motion-banner" id="motion-banner" style="display:none">
+    <p>Allow motion access for step detection</p>
+    <button onclick="requestMotionPermission()">Allow</button>
+  </div>
+
+  <div class="timer-card">
+    <div class="timer-label">Duration</div>
+    <div class="timer-value" id="dur">00:00</div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="stat-label">Distance</div>
+      <div class="stat-value" id="dist">0.00</div>
+      <div class="stat-unit">kilometres</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Current speed</div>
+      <div class="stat-value" id="speed">0.0</div>
+      <div class="stat-unit">km/h</div>
+    </div>
+    <div class="stat full">
+      <div>
+        <div class="stat-label">Avg speed</div>
+        <div class="stat-value" id="avg-speed">0.0</div>
+      </div>
+      <div class="stat-right">
+        <div class="stat-label">Pace</div>
+        <div class="stat-value" id="pace">--:--</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Step detection</div>
+
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="stat-label">Steps</div>
+      <div class="stat-value" id="steps">0</div>
+      <div class="stat-unit">total</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Cadence</div>
+      <div class="stat-value" id="cadence">0</div>
+      <div class="stat-unit">steps/min</div>
+    </div>
+    <div class="stat full">
+      <div>
+        <div class="stat-label">Stride length</div>
+        <div class="stat-value" id="stride">--</div>
+      </div>
+      <div class="stat-right">
+        <div class="stat-label">Step freq</div>
+        <div class="stat-value" id="step-hz">--</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-header">
+      <span class="chart-title">Speed over time</span>
+      <span id="chart-max"></span>
+    </div>
+    <canvas id="speed-canvas"></canvas>
+  </div>
+
+  <button id="start-btn" class="idle" onclick="toggleRun()">Start run</button>
+  <p class="lock-note">Keep screen on to maintain GPS and step tracking</p>
+
+  <div class="log-card">
+    <div class="log-title">Activity log</div>
+    <div class="log-list" id="log-list">
+      <div class="log-row"><span class="log-msg">Waiting to start...</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── State ──────────────────────────────────────────────────────────────────
+  let state = 'idle';
+  let watchId = null, timerInterval = null;
+  let startTime = null, elapsedSec = 0;
+  let totalDistKm = 0, lastPos = null;
+  let speedHistory = [], logRows = [];
+  const MAX_HIST = 80;
+
+  // Step detection
+  let stepCount = 0, lastStepTime = 0;
+  let accelBuf = [];
+  const BUF_SIZE = 8;         // ~133ms smoothing window at 60hz
+  const MIN_GAP_MS = 250;     // fastest plausible step
+  let smoothedMag = 0;
+  let prevSmoothed = 0;
+  let peakHeld = false;
+  let cadenceWindow = [];
+  const CADENCE_WIN_SEC = 10;
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function haversine(lat1, lon1, lat2, lon2) {
+    const R = 6371000, toR = Math.PI / 180;
+    const dLat = (lat2-lat1)*toR, dLon = (lon2-lon1)*toR;
+    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*toR)*Math.cos(lat2*toR)*Math.sin(dLon/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  function formatDur(s) {
+    const h = Math.floor(s/3600), m = Math.floor((s%3600)/60).toString().padStart(2,'0'), ss = (s%60).toString().padStart(2,'0');
+    return h > 0 ? `${h}:${m}:${ss}` : `${m}:${ss}`;
+  }
+
+  function formatPace(kmh) {
+    if (kmh < 0.5) return '--:--';
+    const mpk = 60/kmh, m = Math.floor(mpk), s = Math.round((mpk-m)*60).toString().padStart(2,'0');
+    return `${m}:${s}`;
+  }
+
+  function nowStr() { return new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+
+  function addLog(msg, val, unit) {
+    logRows.unshift({ t: nowStr(), msg, val, unit });
+    if (logRows.length > 40) logRows.pop();
+    document.getElementById('log-list').innerHTML = logRows.map(r =>
+      `<div class="log-row">
+        <span class="log-time">${r.t.slice(0,5)}</span>
+        <span class="log-msg">${r.msg}</span>
+        <span class="log-val">${r.val != null ? r.val + (r.unit||'') : ''}</span>
+      </div>`
+    ).join('');
+  }
+
+  function drawChart() {
+    const canvas = document.getElementById('speed-canvas');
+    const dpr = window.devicePixelRatio || 1, W = canvas.offsetWidth || 320, H = 72;
+    canvas.width = W*dpr; canvas.height = H*dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr); ctx.clearRect(0,0,W,H);
+    if (speedHistory.length < 2) return;
+    const max = Math.max(...speedHistory, 1);
+    document.getElementById('chart-max').textContent = max.toFixed(1) + ' km/h peak';
+    ctx.beginPath(); ctx.strokeStyle = '#1D9E75'; ctx.lineWidth = 1.5;
+    speedHistory.forEach((v,i) => {
+      const x = (i/(speedHistory.length-1))*W, y = H - (v/max)*(H-6) - 3;
+      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    ctx.lineTo(W,H); ctx.lineTo(0,H); ctx.closePath();
+    ctx.fillStyle = 'rgba(29,158,117,0.1)'; ctx.fill();
+  }
+
+  // ── GPS ────────────────────────────────────────────────────────────────────
+  function onPosition(pos) {
+    const { latitude, longitude, speed, accuracy } = pos.coords;
+    document.getElementById('gps-dot').className = 'dot green';
+    document.getElementById('gps-label').textContent = `±${Math.round(accuracy)}m`;
+    if (state !== 'running') return;
+
+    let kmh = (speed != null && speed >= 0) ? speed * 3.6 : 0;
+
+    if (lastPos && accuracy < 40) {
+      const d = haversine(lastPos.lat, lastPos.lon, latitude, longitude);
+      if (d > 3) {
+        totalDistKm += d / 1000;
+        if (speed == null || speed < 0) {
+          const dt = (pos.timestamp - lastPos.ts) / 1000;
+          if (dt > 0) kmh = (d/dt) * 3.6;
+        }
+      }
+    }
+    lastPos = { lat: latitude, lon: longitude, ts: pos.timestamp };
+    kmh = Math.max(0, Math.min(kmh, 45));
+    speedHistory.push(parseFloat(kmh.toFixed(2)));
+    if (speedHistory.length > MAX_HIST) speedHistory.shift();
+
+    document.getElementById('speed').textContent = kmh.toFixed(1);
+    document.getElementById('dist').textContent = totalDistKm.toFixed(2);
+    updateStride();
+    drawChart();
+    if (speedHistory.length % 10 === 1) addLog(`GPS: ${totalDistKm.toFixed(2)} km`, kmh.toFixed(1), ' km/h');
+  }
+
+  function onGPSError(err) {
+    const msgs = {1:'Location permission denied.',2:'GPS unavailable. Try outdoors.',3:'GPS timed out.'};
+    showError(msgs[err.code] || 'GPS error.');
+    document.getElementById('gps-dot').className = 'dot error';
+    document.getElementById('gps-label').textContent = 'Error';
+  }
+
+  // ── Step detection ─────────────────────────────────────────────────────────
+  function onMotion(e) {
+    if (state !== 'running') return;
+    const acc = e.accelerationIncludingGravity;
+    if (!acc || acc.x == null) return;
+
+    // Raw magnitude
+    const mag = Math.sqrt(acc.x**2 + acc.y**2 + acc.z**2);
+
+    // Rolling average to smooth noise
+    accelBuf.push(mag);
+    if (accelBuf.length > BUF_SIZE) accelBuf.shift();
+    prevSmoothed = smoothedMag;
+    smoothedMag = accelBuf.reduce((a,b)=>a+b,0) / accelBuf.length;
+
+    // Dynamic threshold: mean of buffer * factor. Adapts to gait amplitude.
+    // Running typically produces 12-18 m/s², walking 10-13 m/s²
+    const bufMean = smoothedMag;
+    const threshold = bufMean * 1.06;
+
+    const now = Date.now();
+
+    // Detect peak: was above threshold, now falling below it
+    if (smoothedMag > threshold) {
+      peakHeld = true;
+    } else if (peakHeld && smoothedMag <= threshold) {
+      peakHeld = false;
+      if (now - lastStepTime > MIN_GAP_MS) {
+        lastStepTime = now;
+        stepCount++;
+        cadenceWindow.push(now);
+        updateStepUI();
+      }
+    }
+  }
+
+  function updateStepUI() {
+    document.getElementById('steps').textContent = stepCount;
+
+    // Cadence from sliding window
+    const cutoff = Date.now() - CADENCE_WIN_SEC * 1000;
+    cadenceWindow = cadenceWindow.filter(t => t > cutoff);
+    const cadence = cadenceWindow.length > 1
+      ? Math.round((cadenceWindow.length / CADENCE_WIN_SEC) * 60) : 0;
+    document.getElementById('cadence').textContent = cadence;
+
+    // Step frequency in Hz
+    if (cadenceWindow.length >= 2) {
+      const span = (cadenceWindow[cadenceWindow.length-1] - cadenceWindow[0]) / 1000;
+      const hz = span > 0 ? (((cadenceWindow.length-1)/span)).toFixed(1) : '--';
+      document.getElementById('step-hz').textContent = hz + ' Hz';
+    }
+    updateStride();
+  }
+
+  function updateStride() {
+    if (stepCount > 0 && totalDistKm > 0) {
+      const cm = Math.round((totalDistKm * 100000) / stepCount);
+      document.getElementById('stride').textContent = cm + ' cm';
+    }
+  }
+
+  // ── Motion permission ──────────────────────────────────────────────────────
+  function startMotion() {
+    window.addEventListener('devicemotion', onMotion);
+    document.getElementById('motion-dot').className = 'dot blue';
+    document.getElementById('motion-label').textContent = 'Active';
+    addLog('Step detection active', null);
+  }
+
+  function requestMotionPermission() {
+    DeviceMotionEvent.requestPermission().then(r => {
+      document.getElementById('motion-banner').style.display = 'none';
+      if (r === 'granted') { startMotion(); }
+      else {
+        document.getElementById('motion-dot').className = 'dot error';
+        document.getElementById('motion-label').textContent = 'Denied';
+        addLog('Motion permission denied', null);
+      }
+    }).catch(() => {
+      document.getElementById('motion-banner').style.display = 'none';
+      addLog('Motion permission error', null);
+    });
+  }
+
+  function initMotion() {
+    if (typeof DeviceMotionEvent === 'undefined') {
+      document.getElementById('motion-label').textContent = 'N/A';
+      return;
+    }
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+      // iOS 13+ — must be triggered by user gesture; show banner
+      document.getElementById('motion-banner').style.display = 'flex';
+    } else {
+      startMotion(); // Android / desktop — no prompt needed
+    }
+  }
+
+  function stopMotion() {
+    window.removeEventListener('devicemotion', onMotion);
+    document.getElementById('motion-dot').className = 'dot';
+    document.getElementById('motion-label').textContent = 'Motion';
+    document.getElementById('motion-banner').style.display = 'none';
+  }
+
+  // ── Timer ──────────────────────────────────────────────────────────────────
+  function updateDisplay() {
+    if (state !== 'running') return;
+    elapsedSec = Math.floor((Date.now() - startTime) / 1000);
+    document.getElementById('dur').textContent = formatDur(elapsedSec);
+    const avg = elapsedSec > 0 ? (totalDistKm / (elapsedSec/3600)) : 0;
+    document.getElementById('avg-speed').textContent = avg.toFixed(1);
+    document.getElementById('pace').textContent = formatPace(avg);
+  }
+
+  // ── Main toggle ────────────────────────────────────────────────────────────
+  function toggleRun() {
+    const btn = document.getElementById('start-btn');
+
+    if (state === 'idle') {
+      state = 'running';
+      startTime = Date.now(); elapsedSec = 0;
+      totalDistKm = 0; lastPos = null;
+      speedHistory = []; logRows = [];
+      stepCount = 0; cadenceWindow = []; accelBuf = []; peakHeld = false; smoothedMag = 0;
+
+      ['dist','speed','avg-speed'].forEach(id => document.getElementById(id).textContent = id === 'dist' ? '0.00' : '0.0');
+      ['pace','stride','step-hz'].forEach(id => document.getElementById(id).textContent = '--:--');
+      document.getElementById('stride').textContent = '--';
+      document.getElementById('step-hz').textContent = '--';
+      document.getElementById('steps').textContent = '0';
+      document.getElementById('cadence').textContent = '0';
+      document.getElementById('chart-max').textContent = '';
+      document.getElementById('err-box').style.display = 'none';
+      document.getElementById('log-list').innerHTML = '<div class="log-row"><span class="log-msg">Acquiring GPS...</span></div>';
+
+      btn.textContent = 'Stop run'; btn.className = 'running';
+      timerInterval = setInterval(updateDisplay, 1000);
+      watchId = navigator.geolocation.watchPosition(onPosition, onGPSError, {
+        enableHighAccuracy: true, timeout: 15000, maximumAge: 0
+      });
+      initMotion();
+
+    } else if (state === 'running') {
+      state = 'idle';
+      clearInterval(timerInterval);
+      if (watchId != null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
+      stopMotion();
+
+      document.getElementById('gps-dot').className = 'dot';
+      document.getElementById('gps-label').textContent = 'GPS';
+      btn.textContent = 'New run'; btn.className = 'done';
+
+      const avg = elapsedSec > 0 ? (totalDistKm/(elapsedSec/3600)) : 0;
+      const stride = stepCount > 0 && totalDistKm > 0 ? Math.round((totalDistKm*100000)/stepCount) : 0;
+      addLog(`Done: ${totalDistKm.toFixed(2)} km, ${stepCount} steps${stride ? ', '+stride+'cm stride' : ''}`, avg.toFixed(1), ' km/h avg');
+    }
+  }
+
+  function showError(msg) {
+    const b = document.getElementById('err-box'); b.textContent = msg; b.style.display = 'block';
+  }
+
+  if (!navigator.geolocation) {
+    showError('Geolocation is not supported by this browser.');
+    const btn = document.getElementById('start-btn');
+    btn.disabled = true; btn.style.opacity = '0.4';
+  }
+</script>
+</body>
+</html>
